@@ -1,0 +1,82 @@
+import { PropTypes } from 'react'
+import { Autocomplete } from './Autocomplete'
+
+const RESORTS = [
+    'A',
+    'B',
+    'C',
+    'D',
+    'E'
+]
+
+export const AddDayForm =({ resort, powder, backcountry, date, onNewDay}) => {
+
+        let _resort, _powder, _date, _backcountry
+
+        const submit = ev => {
+            ev.preventDefault()
+
+            let newDay = {
+                resort: _resort.value,
+                date: _date.value,
+                powder: _powder.checked,
+                backcountry: _backcountry.checked
+            }
+
+            onNewDay(newDay)
+
+            _resort.value = '',
+            _date.value = '',
+            _powder.checked = false,
+            _backcountry.checked = false
+                        
+        }
+
+        return (
+            <form onSubmit={submit}>
+
+                <label htmlFor="resort">Resort</label>
+                <Autocomplete options={RESORTS}
+                              ref={input => _resort = input} />
+                
+                <label htmlFor="date">Date</label>
+                    <input  id="date"
+                            type="date"
+                            defaultValue={date}
+                            ref={input => _date = input}
+                            required />
+                <div>
+                    <input  id="powder" 
+                            type="checkbox"
+                            ref={input => _powder = input} 
+                            defaultChecked={powder} />
+                    <label htmlFor="powder">powder</label>
+                </div>
+
+                <div>
+                    <input id="backcountry" 
+                            type="checkbox" 
+                            ref={input => _backcountry = input}
+                            defaultChecked={backcountry}/>
+                    <label htmlFor="backcountry">backcountry</label>
+                </div>
+
+                <button>Add Day</button>
+                
+            </form>
+        )
+}
+
+AddDayForm.defaultProps = {
+    resort: 'Aspen',
+    date: '1/2/2016',
+    powder: true,
+    backcountry: false  
+}
+
+AddDayForm.propTypes = {
+    resort: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    powder: PropTypes.bool.isRequired,
+    backcountry: PropTypes.bool.isRequired
+}
