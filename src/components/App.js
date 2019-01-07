@@ -30,8 +30,23 @@ export class App extends Component {
 
 		this.setState({ 
 			allSkiDays: [...this.state.allSkiDays, newDay] },
-			() => console.log('Day added')
-		  );		
+			() => {
+
+				let last_Resort = this.state.allSkiDays[this.state.allSkiDays.length -1]
+				
+				fetch(URL_API, {
+					method: 'post',
+					headers: {
+					  'Content-Type': 'application/json',
+					  'X-User-Email': 'ro@ro.com',
+					  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
+					},
+					body: JSON.stringify(last_Resort)
+				  }).then(res=>res.json())
+					.then(res => console.log(res));					
+			}
+		  );	
+
 	}
 
 	countDays(filter) {
