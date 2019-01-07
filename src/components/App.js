@@ -28,17 +28,11 @@ export class App extends Component {
 
 	addDay(newDay) {
 
-		
-		
-
 		this.setState({ 
 			allSkiDays: [...this.state.allSkiDays, newDay] },
 			() => {
 
 				let last_Resort = this.state.allSkiDays[this.state.allSkiDays.length -1]
-
-				console.log(last_Resort);
-				
 				
 				fetch(URL_API, {
 					method: 'post',
@@ -47,10 +41,7 @@ export class App extends Component {
 					  'X-User-Email': 'ro@ro.com',
 					  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
 					},
-					body: JSON.stringify(
-						
-						last_Resort
-					)
+					body: JSON.stringify(last_Resort)
 				  }).then(res=>res.json())
 					.then(res => console.log(res));					
 			}
