@@ -16,12 +16,19 @@ export const AddDayForm =({ resort, powder, backcountry, date, onNewDay}) => {
         const submit = ev => {
             ev.preventDefault()
 
+            let rawDate = new Date(_date.value)
+
+            let dateFormatted = rawDate.toLocaleDateString()
+
             let newDay = {
-                resort: _resort.value,
-                date: _date.value,
+                name: _resort.value,
+                date: dateFormatted,
                 powder: _powder.checked,
                 backcountry: _backcountry.checked
             }
+         
+       
+            
 
             onNewDay(newDay)
 
@@ -68,14 +75,14 @@ export const AddDayForm =({ resort, powder, backcountry, date, onNewDay}) => {
 }
 
 AddDayForm.defaultProps = {
-    resort: 'Aspen',
+    name: 'Aspen',
     date: '1/2/2016',
     powder: true,
     backcountry: false  
 }
 
 AddDayForm.propTypes = {
-    resort: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
     powder: PropTypes.bool.isRequired,
     backcountry: PropTypes.bool.isRequired
