@@ -31,7 +31,28 @@ export class App extends Component {
 		this.setState({ 
 			allSkiDays: [...this.state.allSkiDays, newDay] },
 			() => console.log('Day added')
-		  );		
+		  );	
+
+		  fetch(URL_API, {
+			method: 'post',
+			headers: {
+			  'Content-Type': 'application/json',
+			  'X-User-Email': 'ro@ro.com',
+			  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
+			},
+			body: JSON.stringify(
+				{
+					"id": 8,
+					"name": "BCN",
+					"date": "05/05/2017",
+					"powder": false,
+					"backcountry": true
+				}
+			)
+		  }).then(res=>res.json())
+			.then(res => console.log(res));		  
+		  
+
 	}
 
 	countDays(filter) {
