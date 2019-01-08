@@ -6,17 +6,14 @@ import { PropTypes } from 'react'
 export const SkiDayRow = ({name, date, 
 							powder, backcountry}) => (
 	<tr>
+		<td>{date}</td>
+		<td>{name}</td>
+		<td>{(powder) ? <SnowFlake/> : null}</td>
+		<td>{(backcountry) ? <Terrain /> : null}</td>
 		<td>
-			{date}
-		</td>
-		<td>
-			{name}
-		</td>
-		<td>
-			{(powder) ? <SnowFlake/> : null}
-		</td>
-		<td>
-			{(backcountry) ? <Terrain /> : null}
+			<form>
+				<button>Remove</button>
+			</form>
 		</td>
 	</tr>						
 
