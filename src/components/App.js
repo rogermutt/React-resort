@@ -7,6 +7,20 @@ import { MemberList } from './MemberList'
 
 const URL_API = 'http://localhost:3001/api/v1/resorts'
 
+const HEADERS = {
+	'Content-Type': 'application/json',
+	'X-User-Email': 'ro@ro.com',
+	'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
+  }
+
+const PostData = (url, type, body) => {
+	return fetch(url, {
+		method: type,
+		headers: HEADERS,
+		body: body
+	  })	
+}
+
 export class App extends Component {
 
 	constructor(props) {
@@ -28,32 +42,20 @@ export class App extends Component {
     }	
 
 	addDay(newDay) {
-		fetch(URL_API, {
-			method: 'POST',
-			headers: {
-			  'Content-Type': 'application/json',
-			  'X-User-Email': 'ro@ro.com',
-			  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
-			},
-			body: JSON.stringify(newDay)
-		  }).then(res=>res.json())
-			.then(newDay => {
-				this.setState({ 
-					allSkiDays: [...this.state.allSkiDays, newDay]}, res => console.log(res)
-				  );	
-			});			
+		PostData(URL_API, 'POST', JSON.stringify(newDay))		  
+		  .then(res=>res.json())
+		  .then(newDay => {
+			this.setState({ 
+				allSkiDays: [...this.state.allSkiDays, newDay]}, 
+				() => console.log(newDay)
+				);	
+		  });			
 	}
 
 	deleteDay(idToDelete) {
 
-		fetch(`${URL_API}/${idToDelete}`, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-User-Email': 'ro@ro.com',	
-				'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
-			}
-			}).then(() => {
+			PostData(`${URL_API}/${idToDelete}`, 'DELETE', null)
+			.then(() => {
 				let filteredState = this.state.allSkiDays.filter(day => day.id !== idToDelete)
 				this.setState({allSkiDays: filteredState})					
 			}).catch(error => console.log(error))			
