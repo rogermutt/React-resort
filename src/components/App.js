@@ -46,48 +46,17 @@ export class App extends Component {
 
 	deleteDay(idToDelete) {
 
-		let { allSkiDays } = this.state
-
-		if (idToDelete === undefined) {
-
-			let last = allSkiDays[allSkiDays.length -1]
-
-				console.log("unedefined > last id: " + allSkiDays.length);
-			
-			let filteredState = allSkiDays.filter(day => day !== last)
-
-			this.setState({allSkiDays: filteredState}, ()=> {
-				console.log("undefined removed");	
-			})
-
-		// let excludeDayToDelete = this.state.allSkiDays.filter(day => day.id != idToDelete)
-
-		// this.setState({ 
-		// 	allSkiDays: excludeDayToDelete },
-		// 	() => {
-		// 		console.log("DELETE request");
-
-		// 		fetch(`${URL_API}/${allSkiDays.length}`, {
-		// 			method: 'DELETE',
-		// 			headers: {
-		// 			  'Content-Type': 'application/json',
-		// 			  'X-User-Email': 'ro@ro.com',
-		// 			  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
-		// 			}
-		// 		  }).then(res => console.log(res))
-		// 		  	.catch(error => console.log(error))						
-		// 	}
-		//   );				
-			
-	 
-
-		} else {
-			console.log("id exists " + idToDelete);
- 
-
-
-		}
-			
+		fetch(`${URL_API}/${idToDelete}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-User-Email': 'ro@ro.com',	
+				'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
+			}
+			}).then(() => {
+				let filteredState = this.state.allSkiDays.filter(day => day.id !== idToDelete)
+				this.setState({allSkiDays: filteredState})					
+			}).catch(error => console.log(error))			
 	}
 
 	countDays(filter) {
