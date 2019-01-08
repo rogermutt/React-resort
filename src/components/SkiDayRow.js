@@ -13,7 +13,7 @@ export const SkiDayRow = ({id, name, date,
 		<td> <button onClick={()=>deleteDay(id)}>X</button> </td>		
 		<td>
 			<form >
-				<button>Remove</button>
+				<button>{id}</button>
 			</form>
 		</td>
 	</tr>						

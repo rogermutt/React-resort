@@ -28,49 +28,66 @@ export class App extends Component {
     }	
 
 	addDay(newDay) {
-
-		this.setState({ 
-			allSkiDays: [...this.state.allSkiDays, newDay] },
-			() => {
-
-				let last_Resort = this.state.allSkiDays[this.state.allSkiDays.length -1]
-				
-				fetch(URL_API, {
-					method: 'post',
-					headers: {
-					  'Content-Type': 'application/json',
-					  'X-User-Email': 'ro@ro.com',
-					  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
-					},
-					body: JSON.stringify(last_Resort)
-				  }).then(res=>res.json())
-					.then(res => console.log(res));					
-			}
-		  );	
-
+		fetch(URL_API, {
+			method: 'POST',
+			headers: {
+			  'Content-Type': 'application/json',
+			  'X-User-Email': 'ro@ro.com',
+			  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
+			},
+			body: JSON.stringify(newDay)
+		  }).then(res=>res.json())
+			.then(newDay => {
+				this.setState({ 
+					allSkiDays: [...this.state.allSkiDays, newDay]}, res => console.log(res)
+				  );	
+			});			
 	}
 
 	deleteDay(idToDelete) {
-		console.log(idToDelete);
 
-		let excludeDayToDelete = this.state.allSkiDays.filter(day => day.id != idToDelete)
+		let { allSkiDays } = this.state
 
-		this.setState({ 
-			allSkiDays: excludeDayToDelete },
-			() => {
-				console.log("DELETE request");
+		if (idToDelete === undefined) {
 
-				fetch(`${URL_API}/${idToDelete}`, {
-					method: 'DELETE',
-					headers: {
-					  'Content-Type': 'application/json',
-					  'X-User-Email': 'ro@ro.com',
-					  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
-					}
-				  }).then(res => console.log(res))
-				  	.catch(error => console.log(error))						
-			}
-		  );				
+			let last = allSkiDays[allSkiDays.length -1]
+
+				console.log("unedefined > last id: " + allSkiDays.length);
+			
+			let filteredState = allSkiDays.filter(day => day !== last)
+
+			this.setState({allSkiDays: filteredState}, ()=> {
+				console.log("undefined removed");	
+			})
+
+		// let excludeDayToDelete = this.state.allSkiDays.filter(day => day.id != idToDelete)
+
+		// this.setState({ 
+		// 	allSkiDays: excludeDayToDelete },
+		// 	() => {
+		// 		console.log("DELETE request");
+
+		// 		fetch(`${URL_API}/${allSkiDays.length}`, {
+		// 			method: 'DELETE',
+		// 			headers: {
+		// 			  'Content-Type': 'application/json',
+		// 			  'X-User-Email': 'ro@ro.com',
+		// 			  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
+		// 			}
+		// 		  }).then(res => console.log(res))
+		// 		  	.catch(error => console.log(error))						
+		// 	}
+		//   );				
+			
+	 
+
+		} else {
+			console.log("id exists " + idToDelete);
+ 
+
+
+		}
+			
 	}
 
 	countDays(filter) {
