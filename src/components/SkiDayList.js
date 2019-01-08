@@ -9,7 +9,7 @@ const dayFilter = (days, filter = null) => {
 	return filter === null ? days : days.filter(day => day[filter])
 }
 		
-export const SkiDayList = ({days, filter}) => {
+export const SkiDayList = ({days, filter, deleteDay}) => {
 
 	let filteredDays = dayFilter(days, filter)
 
@@ -32,7 +32,7 @@ export const SkiDayList = ({days, filter}) => {
 			</thead>
 			<tbody>
 				{filteredDays.map((day, i) =>
-					<SkiDayRow key={i}
+					<SkiDayRow deleteDay={deleteDay} key={i}
 							{...day}/>	
 					)}
 			</tbody>

@@ -16,6 +16,7 @@ export class App extends Component {
 		}
 
 		this.addDay = this.addDay.bind(this)
+		this.deleteDay = this.deleteDay.bind(this)
 	}
 
     componentDidMount() {
@@ -27,26 +28,35 @@ export class App extends Component {
     }	
 
 	addDay(newDay) {
+		fetch(URL_API, {
+			method: 'POST',
+			headers: {
+			  'Content-Type': 'application/json',
+			  'X-User-Email': 'ro@ro.com',
+			  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
+			},
+			body: JSON.stringify(newDay)
+		  }).then(res=>res.json())
+			.then(newDay => {
+				this.setState({ 
+					allSkiDays: [...this.state.allSkiDays, newDay]}, res => console.log(res)
+				  );	
+			});			
+	}
 
-		this.setState({ 
-			allSkiDays: [...this.state.allSkiDays, newDay] },
-			() => {
+	deleteDay(idToDelete) {
 
-				let last_Resort = this.state.allSkiDays[this.state.allSkiDays.length -1]
-				
-				fetch(URL_API, {
-					method: 'post',
-					headers: {
-					  'Content-Type': 'application/json',
-					  'X-User-Email': 'ro@ro.com',
-					  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
-					},
-					body: JSON.stringify(last_Resort)
-				  }).then(res=>res.json())
-					.then(res => console.log(res));					
+		fetch(`${URL_API}/${idToDelete}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-User-Email': 'ro@ro.com',	
+				'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
 			}
-		  );	
-
+			}).then(() => {
+				let filteredState = this.state.allSkiDays.filter(day => day.id !== idToDelete)
+				this.setState({allSkiDays: filteredState})					
+			}).catch(error => console.log(error))			
 	}
 
 	countDays(filter) {
@@ -71,7 +81,11 @@ export class App extends Component {
 						? <AddDayForm onNewDay={this.addDay} />
 						: (this.props.location.pathname === '/members') 
 							? <MemberList />
-							: <SkiDayList days={this.state.allSkiDays} filter={this.props.params.filter} />  
+							: <SkiDayList 
+								days={this.state.allSkiDays} 
+								filter={this.props.params.filter} 
+								deleteDay={this.deleteDay}
+								/>  
 				}
 			</div>
 		)
