@@ -51,7 +51,16 @@ export class App extends Component {
 	}
 
 	deleteDay(idToDelete) {
-		console.log(idToDelete);		
+		console.log(idToDelete);
+
+		let excludeDayToDelete = this.state.allSkiDays.filter(day => day.id != idToDelete)
+
+		this.setState({ 
+			allSkiDays: excludeDayToDelete },
+			() => {
+				console.log("Day removed. Here goes DELETE");
+			}
+		  );				
 	}
 
 	countDays(filter) {
