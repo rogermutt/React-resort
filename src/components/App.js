@@ -16,6 +16,7 @@ export class App extends Component {
 		}
 
 		this.addDay = this.addDay.bind(this)
+		this.deleteDay = this.deleteDay.bind(this)
 	}
 
     componentDidMount() {
@@ -49,6 +50,10 @@ export class App extends Component {
 
 	}
 
+	deleteDay(idToDelete) {
+		console.log(idToDelete);		
+	}
+
 	countDays(filter) {
 		const { allSkiDays } = this.state
 		return allSkiDays.filter(
@@ -71,7 +76,11 @@ export class App extends Component {
 						? <AddDayForm onNewDay={this.addDay} />
 						: (this.props.location.pathname === '/members') 
 							? <MemberList />
-							: <SkiDayList days={this.state.allSkiDays} filter={this.props.params.filter} />  
+							: <SkiDayList 
+								days={this.state.allSkiDays} 
+								filter={this.props.params.filter} 
+								deleteDay={this.deleteDay}
+								/>  
 				}
 			</div>
 		)
