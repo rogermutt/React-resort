@@ -58,7 +58,17 @@ export class App extends Component {
 		this.setState({ 
 			allSkiDays: excludeDayToDelete },
 			() => {
-				console.log("Day removed. Here goes DELETE");
+				console.log("DELETE request");
+
+				fetch(`${URL_API}/${idToDelete}`, {
+					method: 'DELETE',
+					headers: {
+					  'Content-Type': 'application/json',
+					  'X-User-Email': 'ro@ro.com',
+					  'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
+					}
+				  }).then(res => console.log(res))
+				  	.catch(error => console.log(error))						
 			}
 		  );				
 	}
