@@ -7,6 +7,17 @@ const LOGIN_DETAILS = {
     "password": '123456'
 }
 
+const getUser = token => {
+    const request = new Request('http://localhost:3001/api/v1/resorts', {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        "Authorization": token,
+      })
+    })
+    console.log('getUser initiated. Token: ' + token);
+    return fetch(request)
+}
+
 function login (loginParams) {  
     return fetch(URL_LOGIN, {
         method: "POST",
@@ -18,8 +29,14 @@ function login (loginParams) {
     })
       .then(res => res.json())
       .then(res => {
-          console.log(res.auth_token)}
-          )      
+
+        console.log('Received Res ' + res);
+        let token = res.auth_token;
+        
+
+
+   
+        })      
       .catch(error => console.log(error))			
   }
 
