@@ -1,5 +1,28 @@
 import React, { Component } from 'react';
 
+const URL_LOGIN = 'http://localhost:3001/authenticate'
+
+const LOGIN_DETAILS = {
+    "email": 'r@r.com',
+    "password": '123456'
+}
+
+function login (loginParams) {  
+    return fetch(URL_LOGIN, {
+        method: "POST",
+        headers: {
+        "Accept":"application/json",
+        "Content-Type":"application/json"
+        },
+        body: JSON.stringify(loginParams)
+    })
+      .then(res => res.json())
+      .then(res => {
+          console.log(res.auth_token)}
+          )      
+      .catch(error => console.log(error))			
+  }
+
 export class LoginPage extends Component {
   constructor() {
     super();
@@ -29,6 +52,8 @@ export class LoginPage extends Component {
     if (!this.state.password) {
       return this.setState({ error: 'Password is required' });
     }
+
+    login(LOGIN_DETAILS)
 
     return this.setState({ error: '' });
   }
