@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import './stylesheets/ui.scss'
 import { App } from './components/App'
 import { Whoops404 } from './components/Whoops404'
+import { LoginPage } from './components/Login'
 import { Router, Route, hashHistory } from 'react-router'
 
 window.React = React
@@ -10,6 +11,7 @@ window.React = React
 render(
 	<Router history={hashHistory} >
 		<Route path="/" component={App} />
+		<Route path="/login" component={LoginPage} />
 		<Route path="list-days" component={App}>
 			<Route path=":filter" component={App} />
 		</Route>

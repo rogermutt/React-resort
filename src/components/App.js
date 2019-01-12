@@ -8,9 +8,7 @@ import { MemberList } from './MemberList'
 const URL_API = 'http://localhost:3001/api/v1/resorts'
 
 const HEADERS = {
-	'Content-Type': 'application/json',
-	'X-User-Email': 'ro@ro.com',
-	'X-User-Token': 'qvaaHp9UqeV-Fibfpd6X'
+	'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE1NDcyOTI3Mjh9.vu6tw94sLM-VmICexrbjnJGJpXCaPrD5dwz8TlEVdEE'
   }
 
 const PostData = (url, type, body) => {
@@ -26,7 +24,8 @@ export class App extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			allSkiDays: []
+			allSkiDays: [],
+			currentUser: null
 		}
 
 		this.addDay = this.addDay.bind(this)
@@ -38,7 +37,9 @@ export class App extends Component {
         .then( response => response.json() )
         .then ( allSkiDays => this.setState({
             allSkiDays
-        }))
+		}))		
+		
+		
     }	
 
 	addDay(newDay) {
@@ -72,7 +73,7 @@ export class App extends Component {
 			<div className="app">
 				<Menu/>
 
-				{ 
+				{
 					(this.props.location.pathname === '/')
 					?  <SkiDayCount 
 							total={this.countDays()}
