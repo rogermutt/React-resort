@@ -7,16 +7,18 @@ const LOGIN_DETAILS = {
     "password": '123456'
 }
 
-const getUser = token => {
+const redirect = () => {
     const request = new Request('http://localhost:3001/api/v1/resorts', {
       headers: new Headers({
         "Content-Type": "application/json",
-        "Authorization": token,
+        "Authorization": localStorage.token
       })
     })
-    console.log('getUser initiated. Token: ' + token);
     return fetch(request)
-}
+      
+      .then(res => console.log(res))
+      .catch(error => console.log(error))
+  }
 
 function login (loginParams) {  
     return fetch(URL_LOGIN, {
@@ -28,15 +30,10 @@ function login (loginParams) {
         body: JSON.stringify(loginParams)
     })
       .then(res => res.json())
-      .then(res => {
+      .then(res => localStorage.setItem('token', res.auth_token))      
+      .then(res => redirect()
 
-        console.log('Received Res ' + res);
-        let token = res.auth_token;
-        
-
-
-   
-        })      
+      )
       .catch(error => console.log(error))			
   }
 
@@ -88,8 +85,6 @@ export class LoginPage extends Component {
   }
 
   render() {
-    // NOTE: I use data-attributes for easier E2E testing
-    // but you don't need to target those (any css-selector will work)
 
     return (
       <div className="Login">
