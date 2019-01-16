@@ -12,6 +12,14 @@ import {
 import './stylesheets/ui.scss'
 
 
+const URL_LOGIN = 'http://localhost:3001/authenticate'
+
+const LOGIN_DETAILS = {
+    "email": 'r@r.com',
+    "password": '123456'
+}
+
+
 function AuthExample() {
   return (
     <Router>
@@ -36,11 +44,30 @@ function AuthExample() {
 const fakeAuth = {
   isAuthenticated: false,
   authenticate(cb) {
-    this.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
+
+    return fetch(URL_LOGIN, {
+        method: "POST",
+        headers: {
+        "Accept":"application/json",
+        "Content-Type":"application/json"
+        },
+        body: JSON.stringify(LOGIN_DETAILS)
+    })
+      .then(res => res.json())
+      .then(res => {
+		  
+		  if (res.auth_token) {			  
+			  localStorage.setItem('token', res.auth_token)
+			  this.isAuthenticated = true
+			  cb()
+		  }
+		  
+		})      
+      .catch(error => console.log(error))		
   },
   signout(cb) {
-    this.isAuthenticated = false;
+	this.isAuthenticated = false;
+	localStorage.removeItem('token');
     setTimeout(cb, 100);
   }
 };
@@ -93,6 +120,7 @@ function Protected() {
 
 class Login extends React.Component {
   state = { redirectToReferrer: false };
+  
 
   login = () => {
     fakeAuth.authenticate(() => {
