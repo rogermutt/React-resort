@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 const URL_LOGIN = 'http://localhost:3001/authenticate'
 
 const LOGIN_DETAILS = {
-    "email": 'r@r.com',
+    "email": 'r@r.com', 
     "password": '123456'
 }
 
@@ -44,8 +44,10 @@ export class LoginPage extends Component {
       username: '',
       password: '',
       error: '',
+      redirectToReferrer: false
     };
 
+    
     this.handlePassChange = this.handlePassChange.bind(this);
     this.handleUserChange = this.handleUserChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
