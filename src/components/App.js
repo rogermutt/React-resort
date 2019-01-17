@@ -37,12 +37,12 @@ export class App extends Component {
 		this.addDay = this.addDay.bind(this)
 		this.deleteDay = this.deleteDay.bind(this)
 		this.authenticate = this.authenticate.bind(this)
+		this.signout = this.signout.bind(this)
 	}
 
     componentDidMount() {
 
 		let loggedIn = localStorage.getItem('token') ? true : false 
-
 		this.setState({ isAuthenticated: loggedIn })		
 
 	}
@@ -57,42 +57,35 @@ export class App extends Component {
 		return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(LOGIN_DETAILS))
 		  .then(res => res.json())
 		  .then(res => {
-	      
-	      if (res.auth_token) {   
-		
-			localStorage.setItem('token', res.auth_token) 
+ 
+		      if (res.auth_token) {   
 
-			if ( localStorage.getItem('token')) {
-	
-				fetch(RESORT_URL, {
-					    headers: {
-						'Authorization': localStorage.getItem('token')
+				 localStorage.setItem('token', res.auth_token) 
+				 fetch(RESORT_URL, {
+						headers: {
+							'Authorization': localStorage.getItem('token')
 						}
-
-					   })  				
-				.then(res => res.json())					
-				.then (allSkiDays => {
-					
-					this.setState({ 
-						allSkiDays: allSkiDays,
-						isAuthenticated: true 
-						}, ()=>{
-							
-							console.log( 'allSkiDays ' + this.state.allSkiDays[0].name);
-							callback()		
-						}  
-					);	
-				})		
-			}
-	      }
+					})  				
+					.then(res => res.json())					
+					.then (allSkiDays => {
+						this.setState({ 
+							allSkiDays: allSkiDays,
+							isAuthenticated: true 
+							}, callback()		
+						);	
+					})		
+		      }
 	    })      
 		  .catch(error => console.log(error))   
 	}
 
 	signout(cb) {
-	  this.state.isAuthenticated = false;
-	  localStorage.removeItem('token');
-		setTimeout(cb, 100);
+		this.setState({ 
+			isAuthenticated: false
+			}, ()=>{
+				localStorage.removeItem('token')
+				cb()	
+			})	
 	}	
 
 	addDay(newDay) {
@@ -138,7 +131,8 @@ export class App extends Component {
 				<AppRouter 
 					authState={this.state.isAuthenticated} 
 					auth={this.authenticate}
-					daylist={this.authenticate}
+					signout={this.signout}
+					daylist={this.state.allSkiDays}
 				/>
 
 				{/* {
