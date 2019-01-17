@@ -10,11 +10,11 @@ import {
 } from "react-router-dom";
 
 import { AddDayForm } from './components/AddDayForm'
+import { SkiDayList } from './components/SkiDayList'
 
 const URL_API = 'http://localhost:3001/api/v1/resorts'
 
 import './stylesheets/ui.scss'
-
 
 const URL_LOGIN = 'http://localhost:3001/authenticate'
 
@@ -22,6 +22,34 @@ const LOGIN_DETAILS = {
     "email": 'r@r.com',
     "password": '123456'
 }
+
+const DAYS = [
+    {
+        "id": 1,
+        "name": "Andorra",
+        "date": "01/01/2017",
+        "powder": true,
+        "backcountry": true
+    },
+    {
+        "id": 3,
+        "name": "Brussels",
+        "date": "05/05/2017",
+        "powder": false,
+        "backcountry": true
+    },
+    {
+        "id": 7,
+        "name": "BCN",
+        "date": "05/05/2017",
+        "powder": false,
+        "backcountry": true
+    }
+]
+
+function Protected() {
+	return <SkiDayList days={DAYS}/>
+  }
 
 function AuthExample() {
   return (
@@ -35,14 +63,19 @@ function AuthExample() {
           <li>
             <Link to="/protected">Protected Page</Link>
           </li>
+          <li>
+            <Link to="/dayList">Day List</Link>
+          </li>		  
         </ul>
         <Route path="/public" component={Public} />
         <Route path="/login" component={Login} />
         <PrivateRoute path="/protected" component={AddDayForm} />
+		<PrivateRoute path="/dayList" component={Protected} />
       </div>
     </Router>
   );
 }
+
 
 const fakeAuth = {
   isAuthenticated: false,
@@ -117,33 +150,14 @@ function Public() {
   return <h3>Public</h3>;
 }
 
-function Protected() {
-  return <h3>Protected</h3>;
-}
 
-function login (loginParams) {  
-    return fetch(URL_LOGIN, {
-        method: "POST",
-        headers: {
-        "Accept":"application/json",
-        "Content-Type":"application/json"
-        },
-        body: JSON.stringify(loginParams)
-    })
-      .then(res => res.json())
-      .then(res => localStorage.setItem('token', res.auth_token))      
-      .then(res => redirect()
-
-      )
-      .catch(error => console.log(error))			
-  }
 
   const HEADERS = {
 	'Authorization': localStorage.getItem('token')
   }  
 
 
-const PostData = (url, type, headers = null, body) => {
+const PostRequest = (url, type, headers = null, body) => {
 	return fetch(url, {
 		method: type,
 		headers: headers,
@@ -151,14 +165,11 @@ const PostData = (url, type, headers = null, body) => {
 	  })	
 }
 
-function getDayList(){
-	
-	return PostData(URL_API, 'GET', HEADERS, null)
+const getDayList =()=>{	
+	return PostRequest(URL_API, 'GET', HEADERS, null)
 	.then( response => response.json() )
-	.then( res => res.map(el=> console.log('el ' + el.name)) )
 	.catch(error => console.log(error))	
 }
-
 
 class Login extends React.Component {
 
