@@ -57,6 +57,15 @@ const Login = withRouter(
           </button>
 );
 
+const Logout = withRouter(
+    ({ history, ...props }) =>
+          <button
+            onClick={() => props.auth(() => history.push("/")) }
+          >
+            Log out
+          </button>
+);
+
 function PrivateRoute({component: Component, ...rest }) {
     return (
       <Route
@@ -72,21 +81,23 @@ function PrivateRoute({component: Component, ...rest }) {
     );
 }
 
+const Menu = () => {
+    return (
+    <nav>
+        <Link to="/public">Public Page |</Link>
+        <Link to="/protected"> Protected Page |</Link>
+        <Link to="/dayList"> Day List </Link>
+    </nav>
+    )
+}
+
 export const AppRouter = ({auth, authState}) => {
     return (
       <Router>
         <div>
-          <ul>
-            <li>
-              <Link to="/public">Public Page</Link>
-            </li>
-            <li>
-              <Link to="/protected">Protected Page</Link>
-            </li>
-            <li>
-              <Link to="/dayList">Day List</Link>
-            </li>                                   
-          </ul>
+
+            <Menu/>
+         
           <Route path="/public" component={Public} />
           <Route path="/login" component={Login} />
           <PrivateRoute authState={authState} auth={auth} path="/protected" component={AddDayForm} />
