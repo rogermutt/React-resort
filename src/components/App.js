@@ -5,6 +5,8 @@ import { AppRouter } from './Router'
 const URL_API = 'http://localhost:3001/api/v1/resorts'
 
 const URL_LOGIN = 'http://localhost:3001/authenticate'
+
+
 const HEADERS = {
 	'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE1NDcyOTI3Mjh9.vu6tw94sLM-VmICexrbjnJGJpXCaPrD5dwz8TlEVdEE'
 }
@@ -13,7 +15,6 @@ const LOGIN_DETAILS = {
     "email": 'r@r.com',
     "password": '123456'
 }
-
 
 const PostData = (url, type, body) => {
 	return fetch(url, {
@@ -98,6 +99,15 @@ export class App extends Component {
 			}).catch(error => console.log(error))			
 	}
 
+	getDayList() {
+
+		PostData(`${URL_API}/${idToDelete}`, 'DELETE', null)
+		.then(() => {
+			let filteredState = this.state.allSkiDays.filter(day => day.id !== idToDelete)
+			this.setState({allSkiDays: filteredState})					
+		}).catch(error => console.log(error))			
+	}
+	
 	countDays(filter) {
 		const { allSkiDays } = this.state
 		return allSkiDays.filter(
@@ -107,7 +117,12 @@ export class App extends Component {
 	render() {
 		return (
 			<div className="app">
-				<AppRouter authState={this.state.isAuthenticated} auth={this.authenticate}/>
+
+				<AppRouter 
+					authState={this.state.isAuthenticated} 
+					auth={this.authenticate}
+					daylist={this.authenticate}
+				/>
 
 				{/* {
 					(this.props.location.pathname === '/')
