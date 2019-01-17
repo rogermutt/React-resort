@@ -18,23 +18,6 @@ import {
 //     <Route path="*" component={Whoops404} />
 // </Router>
 
-const AuthButton = withRouter(
-    ({ history, ...props }) =>
-      true ? (
-        <p>
-          Welcome!{" "}
-          <button
-            onClick={() => {
-              fakeAuth.signout(() => history.push("/"));
-            }}
-          >
-            Sign out
-          </button>
-        </p>
-      ) : (
-        <p>You are not logged in.</p>
-      )
-  );
 
 function Public() {
     return <h3>Public</h3>;

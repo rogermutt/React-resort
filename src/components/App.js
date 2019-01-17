@@ -2,13 +2,13 @@ import { Component } from 'react'
 import { Menu } from './Menu'
 import { AppRouter } from './Router'
 
-const URL_API = 'http://localhost:3001/api/v1/resorts'
+const RESORT_URL = 'http://localhost:3001/api/v1/resorts'
 
 const URL_LOGIN = 'http://localhost:3001/authenticate'
 
 
 const HEADERS = {
-	'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE1NDcyOTI3Mjh9.vu6tw94sLM-VmICexrbjnJGJpXCaPrD5dwz8TlEVdEE'
+	'Authorization': localStorage.getItem('token')
 }
 
 const LOGIN_DETAILS = {
@@ -16,12 +16,12 @@ const LOGIN_DETAILS = {
     "password": '123456'
 }
 
-const PostData = (url, type, body) => {
-	return fetch(url, {
-		method: type,
-		headers: HEADERS,
-		body: body
-	  })	
+const PostRequest = (url, type, headers = null, body) => {
+	  return fetch(url, {
+	    method: type,
+	    headers: headers,
+	    body: body
+	   })  
 }
 
 export class App extends Component {
@@ -44,43 +44,40 @@ export class App extends Component {
 
 		this.setState({ isAuthenticated: loggedIn })		
 
-        // fetch(URL_API)
-        // .then( response => response.json() )
-        // .then ( allSkiDays => this.setState({
-        //     allSkiDays
-		// }))		
-		
 	}
 	
 	authenticate(callback) {
-		return fetch(URL_LOGIN, {
-			method: "POST",
-			headers: {
+
+		let logIn_Headers = {
 			"Accept":"application/json",
 			"Content-Type":"application/json"
-			},
-			body: JSON.stringify(LOGIN_DETAILS)
-		})
+			}
+
+		return PostRequest(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(LOGIN_DETAILS))
 		  .then(res => res.json())
 		  .then(res => {
 	      
 	      if (res.auth_token) {       
 	        localStorage.setItem('token', res.auth_token)
-			this.setState( { isAuthenticated: true }, callback() );	
-			console.log(this.state.isAuthenticated);
+
+			this.setState({ 
+				isAuthenticated: true }, 
+				callback() 
+			);	
+
 	      }
 	    })      
 		  .catch(error => console.log(error))   
-	  }
+	}
 
-	  signout(cb) {
+	signout(cb) {
 	  this.state.isAuthenticated = false;
 	  localStorage.removeItem('token');
 		setTimeout(cb, 100);
-	  }	
+	}	
 
 	addDay(newDay) {
-		PostData(URL_API, 'POST', JSON.stringify(newDay))		  
+		PostRequest(RESORT_URL, 'POST', JSON.stringify(newDay))		  
 		  .then(res=>res.json())
 		  .then(newDay => {
 			this.setState({ 
@@ -92,7 +89,7 @@ export class App extends Component {
 
 	deleteDay(idToDelete) {
 
-			PostData(`${URL_API}/${idToDelete}`, 'DELETE', null)
+			PostRequest(`${RESORT_URL}/${idToDelete}`, 'DELETE', null)
 			.then(() => {
 				let filteredState = this.state.allSkiDays.filter(day => day.id !== idToDelete)
 				this.setState({allSkiDays: filteredState})					
@@ -101,11 +98,13 @@ export class App extends Component {
 
 	getDayList() {
 
-		PostData(`${URL_API}/${idToDelete}`, 'DELETE', null)
-		.then(() => {
-			let filteredState = this.state.allSkiDays.filter(day => day.id !== idToDelete)
-			this.setState({allSkiDays: filteredState})					
-		}).catch(error => console.log(error))			
+		PostRequest(RESORT_URL, 'GET', HEADERS, null)
+		.then( response => response.json())
+        .then (allSkiDays => this.setState({
+            allSkiDays
+		}))			
+		.catch(error => console.log(error)) 		
+		
 	}
 	
 	countDays(filter) {
