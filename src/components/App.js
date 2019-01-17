@@ -1,15 +1,19 @@
 import { Component } from 'react'
-import { SkiDayList } from './SkiDayList'
-import { SkiDayCount } from './SkiDayCount'
-import { AddDayForm } from './AddDayForm'
 import { Menu } from './Menu'
-import { MemberList } from './MemberList'
+import { AppRouter } from './Router'
 
 const URL_API = 'http://localhost:3001/api/v1/resorts'
 
+const URL_LOGIN = 'http://localhost:3001/authenticate'
 const HEADERS = {
 	'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE1NDcyOTI3Mjh9.vu6tw94sLM-VmICexrbjnJGJpXCaPrD5dwz8TlEVdEE'
-  }
+}
+
+const LOGIN_DETAILS = {
+    "email": 'r@r.com',
+    "password": '123456'
+}
+
 
 const PostData = (url, type, body) => {
 	return fetch(url, {
@@ -25,11 +29,12 @@ export class App extends Component {
 		super(props)
 		this.state = {
 			allSkiDays: [],
-			currentUser: null
+			isAuthenticated: false
 		}
 
 		this.addDay = this.addDay.bind(this)
 		this.deleteDay = this.deleteDay.bind(this)
+		this.authenticate = this.authenticate.bind(this)
 	}
 
     componentDidMount() {
@@ -39,8 +44,36 @@ export class App extends Component {
             allSkiDays
 		}))		
 		
-		
-    }	
+	}
+	
+	authenticate(cb) {
+
+		return fetch(URL_LOGIN, {
+			method: "POST",
+			headers: {
+			"Accept":"application/json",
+			"Content-Type":"application/json"
+			},
+			body: JSON.stringify(LOGIN_DETAILS)
+		})
+		  .then(res => res.json())
+		  .then(res => {
+	      
+	      if (res.auth_token) {       
+	        localStorage.setItem('token', res.auth_token)
+	        this.state.isAuthenticated = true
+	        cb()
+	      }
+	      
+	    })      
+		  .catch(error => console.log(error))   
+	  }
+
+	  signout(cb) {
+	  this.state.isAuthenticated = false;
+	  localStorage.removeItem('token');
+		setTimeout(cb, 100);
+	  }	
 
 	addDay(newDay) {
 		PostData(URL_API, 'POST', JSON.stringify(newDay))		  
@@ -69,11 +102,12 @@ export class App extends Component {
 	}
 
 	render() {
+
 		return (
 			<div className="app">
-				<Menu/>
+				<AppRouter authState={this.state.isAuthenticated} auth={this.authenticate}/>
 
-				{
+				{/* {
 					(this.props.location.pathname === '/')
 					?  <SkiDayCount 
 							total={this.countDays()}
@@ -89,7 +123,7 @@ export class App extends Component {
 								filter={this.props.params.filter} 
 								deleteDay={this.deleteDay}
 								/>  
-				}
+				} */}
 			</div>
 		)
 	}
