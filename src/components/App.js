@@ -17,7 +17,6 @@ const LOGIN_DETAILS = {
 }
 
 const HTTP_Request = (url, type, headers = null, body) => {
-	console.log('HEADERS ' + headers);
 	  return fetch(url, {
 	    method: type,
 	    headers: headers,
@@ -52,7 +51,7 @@ export class App extends Component {
 		let logIn_Headers = {
 			"Accept":"application/json",
 			"Content-Type":"application/json"
-			}
+		}
 
 		return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(LOGIN_DETAILS))
 		  .then(res => res.json())
@@ -125,6 +124,8 @@ export class App extends Component {
 	}
 
 	render() {
+		console.log( 'app ' +this.state.allSkiDays);
+		
 		return (
 			<div className="app">
 

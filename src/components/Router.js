@@ -29,14 +29,10 @@ function AddDayForm() {
     return <h3>AddDayForm</h3>;
 } 
 
-function DayList(props) {
-    return <SkiDayList daylist={props.daylist} />;
-} 
-
 const Login = withRouter(
     ({ history, ...props }) =>
           <button
-            onClick={() => props.auth(() => history.push("/")) }
+            onClick={() => props.auth(() => history.push("/dayList")) }
           >
             Log in
           </button>
@@ -78,6 +74,8 @@ const Menu = () => {
 }
 
 export const AppRouter = ({auth, authState, daylist, signout}) => {
+    console.log('Router ' + daylist)
+    
     return (
       <Router>
         <div>
@@ -97,8 +95,11 @@ export const AppRouter = ({auth, authState, daylist, signout}) => {
                 signout={signout}
                 daylist={daylist} 
                 auth={auth} 
-                path="/dayList" 
-                component={DayList} />
+                path="/dayList"
+                render={(props) => (<SkiDayList daylist={...props} /> )}
+                />
+
+
         </div>
       </Router>
     );
