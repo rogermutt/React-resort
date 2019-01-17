@@ -51,9 +51,7 @@ function DayList() {
 const Login = withRouter(
     ({ history, ...props }) =>
           <button
-            onClick={() => {
-              props.auth(() => history.push("/"));
-            }}
+            onClick={() => props.auth(() => history.push("/")) }
           >
             Log in
           </button>
@@ -64,21 +62,20 @@ function PrivateRoute({component: Component, ...rest }) {
       <Route
         {...rest}
         render={props =>
-            false ? (
+            rest.authState ? (
             <Component {...props} />
           ) : (
-            <Login auth={rest.auth.auth} />
+            <Login auth={rest.auth} />
           )
         }
       />
     );
-  }
+}
 
-export const AppRouter = (auth, signout) => {
+export const AppRouter = ({auth, authState}) => {
     return (
       <Router>
         <div>
-          {/* <AuthButton /> */}
           <ul>
             <li>
               <Link to="/public">Public Page</Link>
@@ -91,9 +88,9 @@ export const AppRouter = (auth, signout) => {
             </li>                                   
           </ul>
           <Route path="/public" component={Public} />
-          <Route path="/login" component={Login} auth={auth} authState={authState}/>
-          <PrivateRoute state auth={auth} path="/protected" component={AddDayForm} />
-          <PrivateRoute auth={auth} path="/dayList" component={DayList} />
+          <Route path="/login" component={Login} />
+          <PrivateRoute authState={authState} auth={auth} path="/protected" component={AddDayForm} />
+          <PrivateRoute authState={authState} auth={auth} path="/dayList" component={DayList} />
         </div>
       </Router>
     );

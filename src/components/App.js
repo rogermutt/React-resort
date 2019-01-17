@@ -38,16 +38,20 @@ export class App extends Component {
 	}
 
     componentDidMount() {
-        fetch(URL_API)
-        .then( response => response.json() )
-        .then ( allSkiDays => this.setState({
-            allSkiDays
-		}))		
+
+		let loggedIn = localStorage.getItem('token') ? true : false 
+
+		this.setState({ isAuthenticated: loggedIn })		
+
+        // fetch(URL_API)
+        // .then( response => response.json() )
+        // .then ( allSkiDays => this.setState({
+        //     allSkiDays
+		// }))		
 		
 	}
 	
-	authenticate(cb) {
-
+	authenticate(callback) {
 		return fetch(URL_LOGIN, {
 			method: "POST",
 			headers: {
@@ -61,10 +65,9 @@ export class App extends Component {
 	      
 	      if (res.auth_token) {       
 	        localStorage.setItem('token', res.auth_token)
-	        this.state.isAuthenticated = true
-	        cb()
+			this.setState( { isAuthenticated: true }, callback() );	
+			console.log(this.state.isAuthenticated);
 	      }
-	      
 	    })      
 		  .catch(error => console.log(error))   
 	  }
@@ -102,7 +105,6 @@ export class App extends Component {
 	}
 
 	render() {
-
 		return (
 			<div className="app">
 				<AppRouter authState={this.state.isAuthenticated} auth={this.authenticate}/>
