@@ -3,15 +3,13 @@ import SnowFlake from 'react-icons/lib/ti/weather-snow'
 import Calendar from 'react-icons/lib/fa/calendar'
 import { SkiDayRow } from './SkiDayRow'
 import { PropTypes } from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
 const dayFilter = (days, filter = null) => {
 	return filter === null ? days : days.filter(day => day[filter])
 }
 		
-export const SkiDayList = ({days, filter, deleteDay}) => {
-
-	let filteredDays = dayFilter(days, filter)
+export const SkiDayList = ({days}) => {
 
 	return (
 		<table>
@@ -31,8 +29,8 @@ export const SkiDayList = ({days, filter, deleteDay}) => {
 				</tr>
 			</thead>
 			<tbody>
-				{filteredDays.map((day, i) =>
-					<SkiDayRow deleteDay={deleteDay} key={i}
+				{days.map((day, i) =>
+					<SkiDayRow key={i}
 							{...day}/>	
 					)}
 			</tbody>
