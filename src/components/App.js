@@ -16,7 +16,8 @@ const LOGIN_DETAILS = {
     "password": '123456'
 }
 
-const PostRequest = (url, type, headers = null, body) => {
+const HTTP_Request = (url, type, headers = null, body) => {
+	console.log('HEADERS ' + headers);
 	  return fetch(url, {
 	    method: type,
 	    headers: headers,
@@ -53,18 +54,36 @@ export class App extends Component {
 			"Content-Type":"application/json"
 			}
 
-		return PostRequest(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(LOGIN_DETAILS))
+		return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(LOGIN_DETAILS))
 		  .then(res => res.json())
 		  .then(res => {
 	      
-	      if (res.auth_token) {       
-	        localStorage.setItem('token', res.auth_token)
+	      if (res.auth_token) {   
+		
+			localStorage.setItem('token', res.auth_token) 
 
-			this.setState({ 
-				isAuthenticated: true }, 
-				callback() 
-			);	
+			if ( localStorage.getItem('token')) {
+	
+				fetch(RESORT_URL, {
+					    headers: {
+						'Authorization': localStorage.getItem('token')
+						}
 
+					   })  				
+				.then(res => res.json())					
+				.then (allSkiDays => {
+					
+					this.setState({ 
+						allSkiDays: allSkiDays,
+						isAuthenticated: true 
+						}, ()=>{
+							
+							console.log( 'allSkiDays ' + this.state.allSkiDays[0].name);
+							callback()		
+						}  
+					);	
+				})		
+			}
 	      }
 	    })      
 		  .catch(error => console.log(error))   
@@ -77,7 +96,7 @@ export class App extends Component {
 	}	
 
 	addDay(newDay) {
-		PostRequest(RESORT_URL, 'POST', JSON.stringify(newDay))		  
+		HTTP_Request(RESORT_URL, 'POST', JSON.stringify(newDay))		  
 		  .then(res=>res.json())
 		  .then(newDay => {
 			this.setState({ 
@@ -89,7 +108,7 @@ export class App extends Component {
 
 	deleteDay(idToDelete) {
 
-			PostRequest(`${RESORT_URL}/${idToDelete}`, 'DELETE', null)
+			HTTP_Request(`${RESORT_URL}/${idToDelete}`, 'DELETE', null)
 			.then(() => {
 				let filteredState = this.state.allSkiDays.filter(day => day.id !== idToDelete)
 				this.setState({allSkiDays: filteredState})					
@@ -98,11 +117,10 @@ export class App extends Component {
 
 	getDayList() {
 
-		PostRequest(RESORT_URL, 'GET', HEADERS, null)
-		.then( response => response.json())
-        .then (allSkiDays => this.setState({
-            allSkiDays
-		}))			
+		// not beign used atm
+
+		HTTP_Request(RESORT_URL, 'GET', HEADERS, null)
+		.then( response => response.json())	
 		.catch(error => console.log(error)) 		
 		
 	}
