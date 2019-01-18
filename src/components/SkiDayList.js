@@ -32,7 +32,7 @@ export const SkiDayList = props => {
 			</thead>
 			<tbody>
 				{days.map((day, i) =>
-					<SkiDayRow key={i}
+					<SkiDayRow key={i} deleteDay={props.deleteDay}
 							{...day}/>	
 					)}
 			</tbody>

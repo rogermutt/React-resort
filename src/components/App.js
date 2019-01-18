@@ -129,7 +129,11 @@ export class App extends Component {
 
 	deleteDay(idToDelete) {
 
-			HTTP_Request(`${RESORT_URL}/${idToDelete}`, 'DELETE', null)
+		let headers = {
+			'Authorization': localStorage.getItem('token')
+			}
+
+			HTTP_Request(`${RESORT_URL}/${idToDelete}`, 'DELETE', headers, null)
 			.then(() => {
 				let filteredState = this.state.allSkiDays.filter(day => day.id !== idToDelete)
 				this.setState({allSkiDays: filteredState})					
@@ -163,6 +167,7 @@ export class App extends Component {
 					signout={this.signout}
 					daylist={this.state.allSkiDays}
 					onNewDay={this.addDay}
+					deleteDay={this.deleteDay}
 				/>
 
 				{/* {

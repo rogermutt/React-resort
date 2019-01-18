@@ -69,7 +69,7 @@ const Menu = () => {
     )
 }
 
-export const AppRouter = ({auth, authState, daylist, signout, onNewDay}) => {
+export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDay}) => {
     return (
       <Router>
         <div>
@@ -95,7 +95,7 @@ export const AppRouter = ({auth, authState, daylist, signout, onNewDay}) => {
                 authState={authState}
                 auth={auth} 
                 path="/dayList"
-                component={() => <SkiDayList days={daylist}/>}
+                component={() => <SkiDayList days={daylist} deleteDay={deleteDay} />}
             />
 
         </div>
