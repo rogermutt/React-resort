@@ -44,6 +44,12 @@ export class App extends Component {
 		this.signout = this.signout.bind(this)
 	}
 
+	// todo
+	// "Add day" in menu
+	// "Remove day" as button inside "day list"
+	// Function to POST day 
+	// Function to remove day 
+
     componentDidMount() {
 
 		let token = localStorage.getItem('token') 
@@ -103,19 +109,31 @@ export class App extends Component {
 	}	
 
 	addDay(newDay) {
-		HTTP_Request(RESORT_URL, 'POST', JSON.stringify(newDay))		  
-		  .then(res=>res.json())
-		  .then(newDay => {
-			this.setState({ 
-				allSkiDays: [...this.state.allSkiDays, newDay]}, 
-				() => console.log(newDay)
-				);	
-		  });			
+
+		let headers = {
+			'Authorization': localStorage.getItem('token'),
+			'Content-Type': 'application/json'
+			}
+
+		let newResort = { "resort": newDay }			
+
+			HTTP_Request(RESORT_URL, 'POST', headers, JSON.stringify(newResort))	
+			.then(res=>res.json())
+			.then(newDay => {
+				this.setState({ 
+					allSkiDays: [...this.state.allSkiDays, newDay]}, 
+					() => console.log(newDay)
+					);	
+			});			
 	}
 
 	deleteDay(idToDelete) {
 
-			HTTP_Request(`${RESORT_URL}/${idToDelete}`, 'DELETE', null)
+		let headers = {
+			'Authorization': localStorage.getItem('token')
+			}
+
+			HTTP_Request(`${RESORT_URL}/${idToDelete}`, 'DELETE', headers, null)
 			.then(() => {
 				let filteredState = this.state.allSkiDays.filter(day => day.id !== idToDelete)
 				this.setState({allSkiDays: filteredState})					
@@ -148,6 +166,8 @@ export class App extends Component {
 					auth={this.authenticate}
 					signout={this.signout}
 					daylist={this.state.allSkiDays}
+					onNewDay={this.addDay}
+					deleteDay={this.deleteDay}
 				/>
 
 				{/* {

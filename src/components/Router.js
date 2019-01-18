@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 
 import { SkiDayList } from './SkiDayList'
-
+import { AddDayForm } from './AddDayForm'
 
 // 	<Router history={hashHistory} >
 //     <Route path="/" component={App} />
@@ -24,11 +24,6 @@ import { SkiDayList } from './SkiDayList'
 function Public() {
     return <h3>Public</h3>;
 }
-
-function AddDayForm() {
-    return <h3>AddDayForm</h3>;
-} 
-
 
 const Login = withRouter(
     ({ history, ...props }) =>
@@ -74,7 +69,7 @@ const Menu = () => {
     )
 }
 
-export const AppRouter = ({auth, authState, daylist, signout}) => {
+export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDay}) => {
     return (
       <Router>
         <div>
@@ -87,15 +82,22 @@ export const AppRouter = ({auth, authState, daylist, signout}) => {
                 daylist={daylist} 
                 auth={auth} 
                 path="/logout" 
-                component={Logout} />            
-            <PrivateRoute authState={authState} auth={auth} path="/protected" component={AddDayForm} />
+                component={Logout} 
+            />  
+
+            <PrivateRoute 
+                authState={authState} 
+                path="/protected" 
+                component={() => <AddDayForm onNewDay={onNewDay}/>}
+            />
 
             <PrivateRoute 
                 authState={authState}
                 auth={auth} 
                 path="/dayList"
-                component={() => <SkiDayList days={daylist}/>}
-                />
+                component={() => <SkiDayList days={daylist} deleteDay={deleteDay} />}
+            />
+
         </div>
       </Router>
     );

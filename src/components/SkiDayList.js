@@ -9,9 +9,7 @@ const dayFilter = (days, filter = null) => {
 	return filter === null ? days : days.filter(day => day[filter])
 }
 		
-export const SkiDayList = props => {
-
-	let days = props.days
+export const SkiDayList = ({days, deleteDay}) => {
 
 	return (
 		<table>
@@ -32,7 +30,7 @@ export const SkiDayList = props => {
 			</thead>
 			<tbody>
 				{days.map((day, i) =>
-					<SkiDayRow key={i}
+					<SkiDayRow key={i} deleteDay={deleteDay}
 							{...day}/>	
 					)}
 			</tbody>
