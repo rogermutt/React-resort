@@ -109,19 +109,15 @@ export class App extends Component {
 	}	
 
 	addDay(newDay) {
-		// HTTP_Request(RESORT_URL, 'POST', HEADERS, JSON.stringify(newDay))	
-	
 
-			let newResort = { "resort": newDay }		
-			
-			fetch(RESORT_URL, {
-				    method: 'POST',
-				    headers: {
-					'Authorization': localStorage.getItem('token'),
-					'Content-Type': 'application/json'
-					},
-				    body: JSON.stringify(newResort)
-			})
+		let headers = {
+			'Authorization': localStorage.getItem('token'),
+			'Content-Type': 'application/json'
+			}
+
+		let newResort = { "resort": newDay }			
+
+			HTTP_Request(RESORT_URL, 'POST', headers, JSON.stringify(newResort))	
 			.then(res=>res.json())
 			.then(newDay => {
 				this.setState({ 
