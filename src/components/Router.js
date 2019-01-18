@@ -9,6 +9,7 @@ import {
 
 import { SkiDayList } from './SkiDayList'
 import { AddDayForm } from './AddDayForm'
+import { Menu } from './Menu'
 
 // 	<Router history={hashHistory} >
 //     <Route path="/" component={App} />
@@ -58,16 +59,16 @@ function PrivateRoute({component: Component, ...rest }) {
     );
 }
 
-const Menu = () => {
-    return (
-    <nav>
-        <Link to="/public">Public Page |</Link>
-        <Link to="/protected"> Login |</Link>
-        <Link to="/logout"> Logout |</Link>
-        <Link to="/dayList"> Day List </Link>
-    </nav>
-    )
-}
+// const Menu = () => {
+//     return (
+//     <nav>
+//         <Link to="/public">Public Page |</Link>
+//         <Link to="/protected"> Login |</Link>
+//         <Link to="/logout"> Logout |</Link>
+//         <Link to="/dayList"> Day List </Link>
+//     </nav>
+//     )
+// }
 
 export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDay}) => {
     return (
