@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { Menu } from './Menu'
 import { AppRouter } from './Router'
+import { SkiDayCount } from './SkiDayCount'
 
 const RESORT_URL = 'http://localhost:3001/api/v1/resorts'
 
@@ -170,23 +171,12 @@ export class App extends Component {
 					deleteDay={this.deleteDay}
 				/>
 
-				{/* {
-					(this.props.location.pathname === '/')
-					?  <SkiDayCount 
-							total={this.countDays()}
-							powder={this.countDays( "powder" )}
-							backcountry={this.countDays( "backcountry" )}
-						/>
-					: (this.props.location.pathname === '/add-day') 
-						? <AddDayForm onNewDay={this.addDay} />
-						: (this.props.location.pathname === '/members') 
-							? <MemberList />
-							: <SkiDayList 
-								days={this.state.allSkiDays} 
-								filter={this.props.params.filter} 
-								deleteDay={this.deleteDay}
-								/>  
-				} */}
+				<SkiDayCount 
+					total={this.countDays()}
+					powder={this.countDays( "powder" )}
+					backcountry={this.countDays( "backcountry" )}
+				/>
+
 			</div>
 		)
 	}
