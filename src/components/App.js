@@ -46,9 +46,24 @@ export class App extends Component {
 
     componentDidMount() {
 
-		let loggedIn = localStorage.getItem('token') ? true : false 
-		this.setState({ isAuthenticated: loggedIn })		
+		let token = localStorage.getItem('token') 
 
+		if (token != null) {
+
+			fetch(RESORT_URL, {
+				headers: {
+					'Authorization': token
+				}
+			})  				
+			.then(res => res.json())					
+			.then (allSkiDays => 
+				this.setState({ 
+					allSkiDays: allSkiDays,
+					isAuthenticated: true 
+					} // Not running callback here so user is not redirected to /dayList	
+				)	
+			)		
+		}		
 	}
 	
 	authenticate(callback) {
@@ -124,7 +139,6 @@ export class App extends Component {
 	}
 
 	render() {
-		console.log( 'app ' +this.state.allSkiDays);
 		
 		return (
 			<div className="app">
