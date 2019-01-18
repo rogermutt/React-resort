@@ -29,6 +29,7 @@ function AddDayForm() {
     return <h3>AddDayForm</h3>;
 } 
 
+
 const Login = withRouter(
     ({ history, ...props }) =>
           <button
@@ -74,8 +75,6 @@ const Menu = () => {
 }
 
 export const AppRouter = ({auth, authState, daylist, signout}) => {
-    console.log('Router ' + daylist)
-    
     return (
       <Router>
         <div>
@@ -90,17 +89,15 @@ export const AppRouter = ({auth, authState, daylist, signout}) => {
                 path="/logout" 
                 component={Logout} />            
             <PrivateRoute authState={authState} auth={auth} path="/protected" component={AddDayForm} />
+
             <PrivateRoute 
                 authState={authState}
-                signout={signout}
-                daylist={daylist} 
                 auth={auth} 
                 path="/dayList"
-                render={(props) => (<SkiDayList daylist={...props} /> )}
+                component={() => <SkiDayList days={daylist}/>}
                 />
-
-
         </div>
       </Router>
     );
   }
+

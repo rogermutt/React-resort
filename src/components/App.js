@@ -16,6 +16,11 @@ const LOGIN_DETAILS = {
     "password": '123456'
 }
 
+let logIn_Headers = {
+	"Accept":"application/json",
+	"Content-Type":"application/json"
+}
+
 const HTTP_Request = (url, type, headers = null, body) => {
 	  return fetch(url, {
 	    method: type,
@@ -47,11 +52,6 @@ export class App extends Component {
 	}
 	
 	authenticate(callback) {
-
-		let logIn_Headers = {
-			"Accept":"application/json",
-			"Content-Type":"application/json"
-		}
 
 		return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(LOGIN_DETAILS))
 		  .then(res => res.json())
