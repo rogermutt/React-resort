@@ -9,9 +9,9 @@ const dayFilter = (days, filter = null) => {
 	return filter === null ? days : days.filter(day => day[filter])
 }
 		
-export const SkiDayList = (days) => {
+export const SkiDayList = props => {
 
-	console.log( 'days ' + days[0]);
+	let days = props.days
 
 	return (
 		<table>
