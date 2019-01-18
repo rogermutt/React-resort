@@ -25,11 +25,8 @@ export const AddDayForm =({ resort, powder, backcountry, date, onNewDay}) => {
                 date: dateFormatted,
                 powder: _powder.checked,
                 backcountry: _backcountry.checked
-            }
-         
-       
-            
-
+            }            
+  
             onNewDay(newDay)
 
             _resort.value = '',
