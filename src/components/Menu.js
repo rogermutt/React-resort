@@ -1,9 +1,12 @@
-import { Link } from 'react-router'
+import { Link } from "react-router-dom"
 
-export const Menu = () => 
+export const Menu = () => {
+    return (
     <nav>
-        <Link to='/' activeClassName="selected">Home</Link>
-        <Link to='/add-day' activeClassName="selected">Add Day</Link>
-        <Link to='/list-days' activeClassName="selected" >List Day</Link>
-        
+        <Link to="/">Main|</Link>
+        <Link to="/protected"> Login |</Link>
+        <Link to="/logout"> Logout |</Link>
+        <Link to="/dayList"> Day List </Link>
     </nav>
+    )
+}

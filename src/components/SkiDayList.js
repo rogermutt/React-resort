@@ -5,11 +5,17 @@ import { SkiDayRow } from './SkiDayRow'
 import { PropTypes } from 'react'
 import { Link } from 'react-router-dom'
 
-const dayFilter = (days, filter = null) => {
+const dayFilter = (days, pathname) => {
+	let filter = pathname ? (pathname == 'dayList' ? null : pathname) : null 
+	// Check filter != undefined, null. If that's the case check if == daylist. Else means is powder or backcountry
 	return filter === null ? days : days.filter(day => day[filter])
 }
 		
 export const SkiDayList = ({days, deleteDay}) => {
+
+	let { pathname } = window.location
+	let filter = pathname.split('/').slice(-1)[0]
+	let filteredDays = dayFilter(days, filter)
 
 	return (
 		<table>
@@ -22,14 +28,14 @@ export const SkiDayList = ({days, deleteDay}) => {
 				</tr>
 				<tr>
 					<td colSpan={4}>
-						<Link to='/list-days'>All Days</Link>
-						<Link to='/list-days/powder'>Powder</Link>
-						<Link to='/list-days/backcountry'>Backcountry</Link>
+						<Link to='/dayList'>All Days</Link>
+						<Link to='/dayList/powder'>Powder</Link>
+						<Link to='/dayList/backcountry'>Backcountry</Link>
 					</td>
 				</tr>
 			</thead>
 			<tbody>
-				{days.map((day, i) =>
+				{filteredDays.map((day, i) =>
 					<SkiDayRow key={i} deleteDay={deleteDay}
 							{...day}/>	
 					)}
