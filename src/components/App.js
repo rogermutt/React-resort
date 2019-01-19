@@ -59,43 +59,14 @@ export class App extends Component {
 		}		
 	}
 	
-	authenticate(credentials, callback) {
+	authenticate(isAuthenticated, allSkiDays) {
 
-		let loginDetails = {
-			"email": credentials.user,
-			"password": credentials.pass
-		}
+		isAuthenticated && this.setState({ 
+			allSkiDays,
+			isAuthenticated
+			} 
+		)
 
-		return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(loginDetails))
-			.then(res => res.json())
-			.then(res => {
-
-					if (res.error) {
-						for (var message in res.error) {
-							console.log('res ' + res.error[message]);
-						}
-					}
-
-				    if (res.auth_token) {   
-
-					localStorage.setItem('token', res.auth_token) 
-					fetch(RESORT_URL, {
-							headers: {
-								'Authorization': localStorage.getItem('token')
-							}
-						})  				
-						.then(res => res.json())					
-						.then (allSkiDays => {
-							this.setState({ 
-								allSkiDays: allSkiDays,
-								isAuthenticated: true 
-								}, callback()		
-							);	
-						})		
-				    }
-			
-		    })      
-		  	.catch(error => console.log(error))   
 	}
 
 	signout(cb) {
