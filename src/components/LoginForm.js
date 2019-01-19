@@ -1,7 +1,4 @@
 import { Component } from 'react'
-import {
-    withRouter
-  } from "react-router-dom";
 
 export class LoginForm extends Component {
     constructor() {

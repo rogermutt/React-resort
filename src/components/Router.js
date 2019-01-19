@@ -2,7 +2,6 @@ import React from "react"
 import {
   BrowserRouter as Router,
   Route,
-  Redirect,
   withRouter,
   Switch
 } from "react-router-dom";
@@ -15,18 +14,9 @@ import { Menu } from './Menu'
 import { Whoops404 } from './Whoops404'
 
 const LoginWrapper = withRouter(
-    ({ history, ...props }) => 
-
-          <LoginForm auth={props.auth} history={history} />
-
-
-          // <button
-          //   onClick={() => props.auth(() => history.push("/dayList")) }
-          // >
-          //   Log in
-          // </button>
-
-
+    ({ history, ...props }) => {
+      return <LoginForm auth={props.auth} history={history} />
+    }
 );
 
 const Logout = withRouter(
