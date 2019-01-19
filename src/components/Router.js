@@ -64,7 +64,7 @@ export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDa
     return (
       <Router>
         <div>
-            <Menu/>
+            <Menu authState={authState} />
 
             <Switch>    
 
@@ -85,6 +85,7 @@ export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDa
                       />  
 
                   <PrivateRoute 
+                      auth={auth} 
                       authState={authState} 
                        path="/protected" exact 
                       component={() => <AddDayForm onNewDay={onNewDay}/>}
