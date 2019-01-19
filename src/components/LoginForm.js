@@ -14,6 +14,13 @@ export class LoginForm extends Component {
       this.handleSubmit = this.handleSubmit.bind(this);
       this.dismissError = this.dismissError.bind(this);
     }
+
+    componentDidMount() {
+      console.log(this.props);
+      
+      let { error } = this.props
+      error && this.setState({ error })
+    }
   
     dismissError() {
       this.setState({ error: '' });

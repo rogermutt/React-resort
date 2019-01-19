@@ -67,17 +67,16 @@ export class App extends Component {
 		}
 
 		return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(loginDetails))
-		  .then(res => res.json())
-		  .then(res => {
+			.then(res => res.json())
+			.then(res => {
 
-				if (res.error) {
-					for (var message in res.error) {
-						console.log('res ' + res.error[message]);
-		
+					if (res.error) {
+						for (var message in res.error) {
+							console.log('res ' + res.error[message]);
+						}
 					}
-				}
 
-			    if (res.auth_token) {   
+				    if (res.auth_token) {   
 
 					localStorage.setItem('token', res.auth_token) 
 					fetch(RESORT_URL, {
@@ -93,10 +92,10 @@ export class App extends Component {
 								}, callback()		
 							);	
 						})		
-			    }
-		
-	    })      
-		  .catch(error => console.log(error))   
+				    }
+			
+		    })      
+		  	.catch(error => console.log(error))   
 	}
 
 	signout(cb) {
