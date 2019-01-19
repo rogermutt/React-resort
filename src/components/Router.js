@@ -74,7 +74,15 @@ export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDa
                       component={() => <SkiDayCount skiDayCount={skiDayCount}/>}
                       />
 
-                  <Route path="/login" exact component={Login} />
+                  <PrivateRoute 
+                      auth={auth}                   
+                      authState={authState} 
+                      path="/addDay" exact 
+                      component={() => <AddDayForm onNewDay={onNewDay}/>}
+                      />
+
+                  
+                  
                   <PrivateRoute 
                       authState={authState}
                       signout={signout}
@@ -87,9 +95,8 @@ export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDa
                   <PrivateRoute 
                       auth={auth} 
                       authState={authState} 
-                       path="/protected" exact 
-                      component={() => <AddDayForm onNewDay={onNewDay}/>}
-                      />
+                      path="/login" exact 
+                      component={Login} />
 
                   <PrivateRoute
                       authState={authState}

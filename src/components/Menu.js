@@ -5,22 +5,19 @@ const menuTitles = {
     false: ['Main', 'Login']
 }
 
+export const Menu = ({authState}) => {   
 
-export const Menu = ({authState}) => {      
+    let routes = authState 
+    ? ['/', '/addDay', '/logout', '/dayList'] 
+    : ['/', '/login']
+
     return (
         <nav>
-            { authState 
-                ? ['/', '/add-day', '/logout', '/dayList']
-                    .map((route,key)=> <Link key={key} to={route}>{menuTitles[authState][key]}|</Link>) 
-                : ['/', '/protected']
-                    .map((route,key)=> <Link key={key} to={route}>{menuTitles[authState][key]}|</Link>) 
-            }
+            {routes.map((route,key)=> 
+                <Link 
+                    key={key} to={route}>{menuTitles[authState][key]}|
+                </Link>
+            )}
         </nav>
     )
 }
-
-// {/* <Link to="/">Main|</Link>
-// <Link to="/login"> Login |</Link>
-// <Link to="/add-day"> Add Day |</Link>
-// <Link to="/logout"> Logout |</Link>
-// <Link to="/dayList"> Day List </Link> */}
