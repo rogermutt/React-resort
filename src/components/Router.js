@@ -9,17 +9,24 @@ import {
 
 import { SkiDayList } from './SkiDayList'
 import { SkiDayCount } from './SkiDayCount'
+import { LoginForm } from './LoginForm'
 import { AddDayForm } from './AddDayForm'
 import { Menu } from './Menu'
 import { Whoops404 } from './Whoops404'
 
-const Login = withRouter(
-    ({ history, ...props }) =>
-          <button
-            onClick={() => props.auth(() => history.push("/dayList")) }
-          >
-            Log in
-          </button>
+const LoginWrapper = withRouter(
+    ({ history, ...props }) => 
+
+          <LoginForm auth={props.auth} history={history} />
+
+
+          // <button
+          //   onClick={() => props.auth(() => history.push("/dayList")) }
+          // >
+          //   Log in
+          // </button>
+
+
 );
 
 const Logout = withRouter(
@@ -39,7 +46,7 @@ function PrivateRoute({component: Component, ...rest }) {
             rest.authState ? (
             <Component {...rest} {...props} />
           ) : (
-            <Login auth={rest.auth} />
+            <LoginWrapper auth={rest.auth} />
           )
         }
       />
@@ -88,7 +95,7 @@ export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDa
                       auth={auth} 
                       authState={authState} 
                       path="/login" exact 
-                      component={Login} />
+                      component={LoginWrapper} />
 
                   <PrivateRoute
                       authState={authState}

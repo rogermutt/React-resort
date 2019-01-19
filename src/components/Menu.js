@@ -15,7 +15,7 @@ export const Menu = ({authState}) => {
         <nav>
             {routes.map((route,key)=> 
                 <Link 
-                    key={key} to={route}>{menuTitles[authState][key]}|
+                    key={key} to={route}>{ menuTitles[authState][key] }
                 </Link>
             )}
         </nav>

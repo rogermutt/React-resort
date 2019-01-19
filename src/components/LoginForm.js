@@ -1,6 +1,9 @@
 import { Component } from 'react'
+import {
+    withRouter
+  } from "react-router-dom";
 
-export class LoginPage extends Component {
+export class LoginForm extends Component {
     constructor() {
       super();
       this.state = {
@@ -25,14 +28,24 @@ export class LoginPage extends Component {
       if (!this.state.username) {
         return this.setState({ error: 'Username is required' });
       }
-  
-      if (!this.state.password) {
+
+      else if (!this.state.password) {
         return this.setState({ error: 'Password is required' });
       }
-  
-      // here
-  
-      return this.setState({ error: '' });
+
+      else {
+        let { auth, history } = this.props
+        let { username, password } = this.state
+
+        this.setState({ error: '' });
+
+        auth( 
+          {user:username, pass:password},
+          () => history.push("/dayList")
+          )
+
+      }
+
     }
   
     handleUserChange(evt) {

@@ -67,9 +67,14 @@ export class App extends Component {
 		}		
 	}
 	
-	authenticate(callback) {
+	authenticate(credentials, callback) {
 
-		return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(LOGIN_DETAILS))
+		let loginDetails = {
+			"email": credentials.user,
+			"password": credentials.pass
+		}
+
+		return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(loginDetails))
 		  .then(res => res.json())
 		  .then(res => {
  
