@@ -13,10 +13,6 @@ import { AddDayForm } from './AddDayForm'
 import { Menu } from './Menu'
 import { Whoops404 } from './Whoops404'
 
-function Public() {
-    return <h3>Public</h3>;
-}
-
 const Login = withRouter(
     ({ history, ...props }) =>
           <button
@@ -50,15 +46,9 @@ function PrivateRoute({component: Component, ...rest }) {
     );
 }
 
-function Roger({days, deleteDay}) {  
-
-  
-  return (
-    <SkiDayList days={days} deleteDay={deleteDay} />
-  );
+const SkiDayListWrapper=({days, deleteDay})=> {  
+    return <SkiDayList days={days} deleteDay={deleteDay} />
 }
-
-
 
 export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDay, skiDayCount}) => {
     return (
@@ -80,7 +70,6 @@ export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDa
                       component={() => <SkiDayCount skiDayCount={skiDayCount}/>}
                       />
                       
-
                   <PrivateRoute 
                       auth={auth}                   
                       authState={authState} 
@@ -88,13 +77,9 @@ export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDa
                       component={() => <AddDayForm onNewDay={onNewDay}/>}
                       />
 
-                  
-                  
                   <PrivateRoute 
-                      authState={authState}
                       signout={signout}
-                      daylist={daylist} 
-                      auth={auth} 
+                      authState={authState} 
                       path="/logout" exact 
                       component={Logout} 
                       />  
@@ -109,7 +94,7 @@ export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDa
                       authState={authState}
                       auth={auth} 
                       path="/dayList" 
-                      component={() => <Roger days={daylist} deleteDay={deleteDay} />}
+                      component={() => <SkiDayListWrapper days={daylist} deleteDay={deleteDay} />}
                       />   
 
                   <Route component={Whoops404} />
