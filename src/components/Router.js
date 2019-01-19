@@ -68,11 +68,18 @@ export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDa
 
             <Switch>    
 
-                  <PrivateRoute 
+                  <Route
                       authState={authState} 
                       path="/" exact 
+                      component={() => <h1>Welcome</h1>}
+                      />
+
+                  <PrivateRoute 
+                      authState={authState} 
+                      path="/overview" exact 
                       component={() => <SkiDayCount skiDayCount={skiDayCount}/>}
                       />
+                      
 
                   <PrivateRoute 
                       auth={auth}                   
