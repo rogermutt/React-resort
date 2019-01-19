@@ -1,5 +1,22 @@
 import { Component } from 'react'
 
+const HTTP_Request = (url, type, headers = null, body) => {
+	  return fetch(url, {
+	    method: type,
+	    headers: headers,
+	    body: body
+	   })  
+}
+
+const RESORT_URL = 'http://localhost:3001/api/v1/resorts'
+
+const URL_LOGIN = 'http://localhost:3001/authenticate'
+
+let logIn_Headers = {
+	"Accept":"application/json",
+	"Content-Type":"application/json"
+}
+
 export class LoginForm extends Component {
     constructor() {
       super();
@@ -21,6 +38,47 @@ export class LoginForm extends Component {
       let { error } = this.props
       error && this.setState({ error })
     }
+
+    authorization(callback) {
+
+
+      let loginDetails = {
+        "email": this.state.username,
+        "password": this.state.password
+      }
+  
+      return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(loginDetails))
+        .then(res => res.json())
+        .then(res => {
+  
+            if (res.error) {
+              for (var message in res.error) {
+                console.log('res ' + res.error[message]);
+                this.setState({ error: res.error[message] });
+              }
+            }
+  
+            if (res.auth_token) {   
+  
+            localStorage.setItem('token', res.auth_token) 
+            fetch(RESORT_URL, {
+                headers: {
+                  'Authorization': localStorage.getItem('token')
+                }
+              })  				
+              .then(res => res.json())					
+              .then (allSkiDays => {
+
+                this.props.auth(true, allSkiDays)
+                this.props.history.push("/dayList")
+    
+              })		
+              }
+        
+          })      
+          .catch(error => console.log(error))  
+                     
+    }    
   
     dismissError() {
       this.setState({ error: '' });
@@ -38,15 +96,12 @@ export class LoginForm extends Component {
       }
 
       else {
-        let { auth, history } = this.props
-        let { username, password } = this.state
+        
+        // HTTP with this.state 
+        // if success > App.js needs to know: 1) days that came back 2) is authorized
 
-        this.setState({ error: '' });
+        this.authorization()
 
-        auth( 
-          {user:username, pass:password},
-          () => history.push("/dayList")
-          )
 
       }
 

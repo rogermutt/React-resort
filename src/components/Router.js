@@ -15,7 +15,7 @@ import { Whoops404 } from './Whoops404'
 
 const LoginWrapper = withRouter(
     ({ history, ...props }) => {
-      return <LoginForm auth={props.auth} history={history} error={props.error} />
+      return <LoginForm auth={props.auth} history={history} />
     }
 );
 
@@ -48,7 +48,7 @@ const SkiDayListWrapper=({days, deleteDay})=> {
 }
 
 export const AppRouter = (
-  {auth, authState, daylist, signout, onNewDay, deleteDay, skiDayCount, authErrorMessage}
+  {auth, authState, daylist, signout, onNewDay, deleteDay, skiDayCount}
   ) => {
     return (
       <Router>
@@ -69,8 +69,7 @@ export const AppRouter = (
                       component={() => <SkiDayCount skiDayCount={skiDayCount}/>}
                       />
                       
-                  <PrivateRoute 
-                      auth={auth}                   
+                  <PrivateRoute                  
                       authState={authState} 
                       path="/addDay" exact 
                       component={() => <AddDayForm onNewDay={onNewDay}/>}
@@ -87,12 +86,11 @@ export const AppRouter = (
                       auth={auth} 
                       authState={authState} 
                       path="/login" exact 
-                      component={() => <LoginWrapper error={authErrorMessage} />}
+                      component={() => <LoginWrapper />}
                       />
 
                   <PrivateRoute
                       authState={authState}
-                      auth={auth} 
                       path="/dayList" 
                       component={() => <SkiDayListWrapper days={daylist} deleteDay={deleteDay} />}
                       />   
