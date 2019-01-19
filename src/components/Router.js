@@ -2,28 +2,21 @@ import React from "react"
 import {
   BrowserRouter as Router,
   Route,
-  Redirect,
   withRouter,
   Switch
 } from "react-router-dom";
 
 import { SkiDayList } from './SkiDayList'
 import { SkiDayCount } from './SkiDayCount'
+import { LoginForm } from './LoginForm'
 import { AddDayForm } from './AddDayForm'
 import { Menu } from './Menu'
 import { Whoops404 } from './Whoops404'
 
-function Public() {
-    return <h3>Public</h3>;
-}
-
-const Login = withRouter(
-    ({ history, ...props }) =>
-          <button
-            onClick={() => props.auth(() => history.push("/dayList")) }
-          >
-            Log in
-          </button>
+const LoginWrapper = withRouter(
+    ({ history, ...props }) => {
+      return <LoginForm auth={props.auth} history={history} error={props.error} />
+    }
 );
 
 const Logout = withRouter(
@@ -43,58 +36,65 @@ function PrivateRoute({component: Component, ...rest }) {
             rest.authState ? (
             <Component {...rest} {...props} />
           ) : (
-            <Login auth={rest.auth} />
+            <LoginWrapper auth={rest.auth} />
           )
         }
       />
     );
 }
 
-function Roger({days, deleteDay}) {  
-
-  
-  return (
-    <SkiDayList days={days} deleteDay={deleteDay} />
-  );
+const SkiDayListWrapper=({days, deleteDay})=> {  
+    return <SkiDayList days={days} deleteDay={deleteDay} />
 }
 
-
-
-export const AppRouter = ({auth, authState, daylist, signout, onNewDay, deleteDay, skiDayCount}) => {
+export const AppRouter = (
+  {auth, authState, daylist, signout, onNewDay, deleteDay, skiDayCount, authErrorMessage}
+  ) => {
     return (
       <Router>
         <div>
-            <Menu/>
+            <Menu authState={authState} />
 
             <Switch>    
 
-                  <PrivateRoute 
+                  <Route
                       authState={authState} 
                       path="/" exact 
-                      component={() => <SkiDayCount skiDayCount={skiDayCount}/>}
+                      component={() => <h1>Welcome</h1>}
                       />
 
-                  <Route path="/login" exact component={Login} />
                   <PrivateRoute 
-                      authState={authState}
+                      authState={authState} 
+                      path="/overview" exact 
+                      component={() => <SkiDayCount skiDayCount={skiDayCount}/>}
+                      />
+                      
+                  <PrivateRoute 
+                      auth={auth}                   
+                      authState={authState} 
+                      path="/addDay" exact 
+                      component={() => <AddDayForm onNewDay={onNewDay}/>}
+                      />
+
+                  <PrivateRoute 
                       signout={signout}
-                      daylist={daylist} 
-                      auth={auth} 
+                      authState={authState} 
                       path="/logout" exact 
                       component={Logout} 
                       />  
 
                   <PrivateRoute 
+                      auth={auth} 
                       authState={authState} 
-                       path="/protected" exact 
-                      component={() => <AddDayForm onNewDay={onNewDay}/>}
+                      path="/login" exact 
+                      component={() => <LoginWrapper error={authErrorMessage} />}
                       />
 
                   <PrivateRoute
                       authState={authState}
                       auth={auth} 
                       path="/dayList" 
-                      component={() => <Roger days={daylist} deleteDay={deleteDay} />}
+                      component={() => <SkiDayListWrapper days={daylist} deleteDay={deleteDay} />}
                       />   
 
                   <Route component={Whoops404} />

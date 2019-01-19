@@ -1,20 +1,12 @@
 import { Component } from 'react'
 import { AppRouter } from './Router'
-import { SkiDayCount } from './SkiDayCount'
-
 
 const RESORT_URL = 'http://localhost:3001/api/v1/resorts'
 
 const URL_LOGIN = 'http://localhost:3001/authenticate'
 
-
 const HEADERS = {
 	'Authorization': localStorage.getItem('token')
-}
-
-const LOGIN_DETAILS = {
-    "email": 'r@r.com',
-    "password": '123456'
 }
 
 let logIn_Headers = {
@@ -67,31 +59,43 @@ export class App extends Component {
 		}		
 	}
 	
-	authenticate(callback) {
+	authenticate(credentials, callback) {
 
-		return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(LOGIN_DETAILS))
-		  .then(res => res.json())
-		  .then(res => {
- 
-		      if (res.auth_token) {   
+		let loginDetails = {
+			"email": credentials.user,
+			"password": credentials.pass
+		}
 
-				 localStorage.setItem('token', res.auth_token) 
-				 fetch(RESORT_URL, {
-						headers: {
-							'Authorization': localStorage.getItem('token')
+		return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(loginDetails))
+			.then(res => res.json())
+			.then(res => {
+
+					if (res.error) {
+						for (var message in res.error) {
+							console.log('res ' + res.error[message]);
 						}
-					})  				
-					.then(res => res.json())					
-					.then (allSkiDays => {
-						this.setState({ 
-							allSkiDays: allSkiDays,
-							isAuthenticated: true 
-							}, callback()		
-						);	
-					})		
-		      }
-	    })      
-		  .catch(error => console.log(error))   
+					}
+
+				    if (res.auth_token) {   
+
+					localStorage.setItem('token', res.auth_token) 
+					fetch(RESORT_URL, {
+							headers: {
+								'Authorization': localStorage.getItem('token')
+							}
+						})  				
+						.then(res => res.json())					
+						.then (allSkiDays => {
+							this.setState({ 
+								allSkiDays: allSkiDays,
+								isAuthenticated: true 
+								}, callback()		
+							);	
+						})		
+				    }
+			
+		    })      
+		  	.catch(error => console.log(error))   
 	}
 
 	signout(cb) {

@@ -1,6 +1,6 @@
 import { Component } from 'react'
 
-export class LoginPage extends Component {
+export class LoginForm extends Component {
     constructor() {
       super();
       this.state = {
@@ -14,6 +14,13 @@ export class LoginPage extends Component {
       this.handleSubmit = this.handleSubmit.bind(this);
       this.dismissError = this.dismissError.bind(this);
     }
+
+    componentDidMount() {
+      console.log(this.props);
+      
+      let { error } = this.props
+      error && this.setState({ error })
+    }
   
     dismissError() {
       this.setState({ error: '' });
@@ -25,14 +32,24 @@ export class LoginPage extends Component {
       if (!this.state.username) {
         return this.setState({ error: 'Username is required' });
       }
-  
-      if (!this.state.password) {
+
+      else if (!this.state.password) {
         return this.setState({ error: 'Password is required' });
       }
-  
-      // here
-  
-      return this.setState({ error: '' });
+
+      else {
+        let { auth, history } = this.props
+        let { username, password } = this.state
+
+        this.setState({ error: '' });
+
+        auth( 
+          {user:username, pass:password},
+          () => history.push("/dayList")
+          )
+
+      }
+
     }
   
     handleUserChange(evt) {

@@ -1,12 +1,23 @@
 import { Link } from "react-router-dom"
 
-export const Menu = () => {
+const menuTitles = {
+        true: ['Overview', 'Add Day', 'Logout', 'Day List'],
+        false: ['Login']
+}
+
+export const Menu = ({authState}) => {   
+
+    let routes = authState 
+    ? ['/overview', '/addDay', '/logout', '/dayList'] 
+    : ['/login']
+
     return (
-    <nav>
-        <Link to="/">Main|</Link>
-        <Link to="/protected"> Login |</Link>
-        <Link to="/logout"> Logout |</Link>
-        <Link to="/dayList"> Day List </Link>
-    </nav>
+        <nav>
+            {routes.map((route,key)=> 
+                <Link 
+                    key={key} to={route}>{ menuTitles[authState][key] }
+                </Link>
+            )}
+        </nav>
     )
 }
