@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import { Link } from "react-router-dom"
 
 const HTTP_Request = (url, type, headers = null, body) => {
 	  return fetch(url, {
@@ -33,7 +34,6 @@ export class LoginForm extends Component {
     }
 
     componentDidMount() {
-      console.log(this.props);
       
       let { error } = this.props
       error && this.setState({ error })
@@ -96,15 +96,10 @@ export class LoginForm extends Component {
       }
 
       else {
-        
         // HTTP with this.state 
         // if success > App.js needs to know: 1) days that came back 2) is authorized
-
         this.authorization()
-
-
       }
-
     }
   
     handleUserChange(evt) {
@@ -139,6 +134,9 @@ export class LoginForm extends Component {
   
             <input type="submit" value="Log In" data-test="submit" />
           </form>
+
+          <Link to='/'>Back</Link>          
+        
         </div>
       );
     }
