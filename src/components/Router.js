@@ -9,6 +9,7 @@ import {
 import { SkiDayList } from './SkiDayList'
 import { SkiDayCount } from './SkiDayCount'
 import { LoginForm } from './LoginForm'
+import { SignUpForm } from './SignUp'
 import { AddDayForm } from './AddDayForm'
 import { Menu } from './Menu'
 import { Whoops404 } from './Whoops404'
@@ -61,6 +62,12 @@ export const AppRouter = (
                       authState={authState} 
                       path="/" exact 
                       component={() => <h1>Welcome</h1>}
+                      />
+
+                  <Route
+                      authState={authState} 
+                      path="/signup" exact 
+                      component={() => <SignUpForm/> }
                       />
 
                   <PrivateRoute 

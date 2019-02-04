@@ -2,14 +2,14 @@ import { Link } from "react-router-dom"
 
 const menuTitles = {
         true: ['Overview', 'Add Day', 'Logout', 'Day List'],
-        false: ['Login']
+        false: ['Login', 'Register']
 }
 
 export const Menu = ({authState}) => {   
 
     let routes = authState 
     ? ['/overview', '/addDay', '/logout', '/dayList'] 
-    : ['/login']
+    : ['/login', '/signup']
 
     return (
         <nav>
