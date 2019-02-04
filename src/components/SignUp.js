@@ -44,7 +44,7 @@ export class SignUpForm extends Component {
       let signUpDetails = {
         "name": 'Roger',          
         "email": this.state.username,
-        "password_digest": this.state.password        
+        "password": this.state.password        
       }
 
       let newUser = { "user": signUpDetails }  
@@ -128,13 +128,13 @@ export class SignUpForm extends Component {
                 {this.state.error}
               </h3>
             }
-            <label>User Name</label>
+            <label>Email</label>
             <input type="text" data-test="username" value={this.state.username} onChange={this.handleUserChange} />
   
             <label>Password</label>
             <input type="password" data-test="password" value={this.state.password} onChange={this.handlePassChange} />
   
-            <input type="submit" value="Log In" data-test="submit" />
+            <input type="submit" value="Sign up" data-test="submit" />
           </form>
  
           <Link to='/'>Back</Link>          
