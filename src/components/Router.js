@@ -63,6 +63,12 @@ export const AppRouter = (
                       component={() => <h1>Welcome</h1>}
                       />
 
+                  <Route
+                      authState={authState} 
+                      path="/signup" exact 
+                      component={() => <h1>Welcome</h1>}
+                      />
+
                   <PrivateRoute 
                       authState={authState} 
                       path="/overview" exact 
