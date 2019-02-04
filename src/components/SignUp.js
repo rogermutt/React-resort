@@ -9,16 +9,16 @@ const HTTP_Request = (url, type, headers = null, body) => {
 	   })  
 }
 
-const RESORT_URL = 'http://localhost:3001/api/v1/resorts'
-
+const URL_SIGNUP = 'http://localhost:3001/api/v1/users'
 const URL_LOGIN = 'http://localhost:3001/authenticate'
+const RESORT_URL = 'http://localhost:3001/api/v1/resorts'
 
 let logIn_Headers = {
 	"Accept":"application/json",
 	"Content-Type":"application/json"
 }
 
-export class LoginForm extends Component {
+export class SignUpForm extends Component {
     constructor() {
       super();
       this.state = {
@@ -41,13 +41,15 @@ export class LoginForm extends Component {
 
     authorization(callback) {
 
-
-      let loginDetails = {
+      let signUpDetails = {
+        "name": 'Roger',          
         "email": this.state.username,
-        "password": this.state.password
+        "password_digest": this.state.password        
       }
-  
-      return HTTP_Request(URL_LOGIN, "POST", logIn_Headers, JSON.stringify(loginDetails))
+
+      let newUser = { "user": signUpDetails }  
+      
+      return HTTP_Request(URL_SIGNUP, "POST", logIn_Headers, JSON.stringify(newUser))
         .then(res => res.json())
         .then(res => {
   
@@ -134,7 +136,7 @@ export class LoginForm extends Component {
   
             <input type="submit" value="Log In" data-test="submit" />
           </form>
-
+ 
           <Link to='/'>Back</Link>          
         
         </div>
