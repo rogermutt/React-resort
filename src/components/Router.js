@@ -20,6 +20,12 @@ const LoginWrapper = withRouter(
     }
 );
 
+const SignUpWrapper = withRouter(
+  ({ history, ...props }) => {
+    return <SignUpForm auth={props.auth} history={history} />
+  }
+);
+
 const Logout = withRouter(
     ({ history, ...props }) =>
           <button
@@ -65,9 +71,10 @@ export const AppRouter = (
                       />
 
                   <Route
+                      auth={auth}                   
                       authState={authState} 
                       path="/signup" exact 
-                      component={() => <SignUpForm/> }
+                      component={() => <SignUpWrapper/> }
                       />
 
                   <PrivateRoute 

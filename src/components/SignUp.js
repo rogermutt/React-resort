@@ -92,10 +92,9 @@ export class SignUpForm extends Component {
               .then(res => res.json())					
               .then (allSkiDays => {
 
-                console.log('allSkiDays ', allSkiDays);
+                console.log('allSkiDays ', this.props);
                 
-
-                // this.props.auth(true, allSkiDays)
+                this.props.auth(true, allSkiDays)
                 this.props.history.push("/dayList")
     
               })
