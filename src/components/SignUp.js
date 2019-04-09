@@ -94,8 +94,8 @@ export class SignUpForm extends Component {
 
                 console.log('allSkiDays ', this.props);
                 
-                this.props.auth(true, allSkiDays)
-                this.props.history.push("/dayList")
+                //this.props.auth(true, allSkiDays)
+                //this.props.history.push("/dayList")
     
               })
               .catch(error => console.log(error))  		
