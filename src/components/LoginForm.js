@@ -58,9 +58,9 @@ export class LoginForm extends Component {
               }
             }
   
-            if (res.auth_token) {   
+            if (res.token) {     
   
-            localStorage.setItem('token', res.auth_token) 
+            localStorage.setItem('token', res.token) 
             fetch(RESORT_URL, {
                 headers: {
                   'Authorization': localStorage.getItem('token')
