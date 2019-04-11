@@ -22,7 +22,6 @@ const LoginWrapper = withRouter(
 
 const SignUpWrapper = withRouter(
   ({ history, ...props }) => {    
-    console.log(props.auth);
     return <SignUpForm auth={props.auth} history={history} />
   }
 );

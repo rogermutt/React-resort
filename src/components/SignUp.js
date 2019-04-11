@@ -71,43 +71,33 @@ export class SignUpForm extends Component {
         .then(res => res.json())
         .then(res => {
 
-          login(LOGIN_DETAILS)
-          .then(res => {
-
-            if (res.error) {
-              for (var message in res.error) {
-                console.log('res ' + res.error[message]);
-                this.setState({ error: res.error[message] });
-              }
-            }
+          console.log(res);
   
-            if (res.token) {    
-  
-            localStorage.setItem('token', res.token) 
-            fetch(RESORT_URL, {
-                headers: {
-                  'Authorization': localStorage.getItem('token')
+              if (res.error) {
+                for (var message in res.error) {
+                  console.log('res ' + res.error[message]);
+                  this.setState({ error: res.error[message] });
                 }
-              })  				
-              .then(res => res.json())					
-              .then (allSkiDays => {
-
-                console.log('allSkiDays ', this.props);
-                
-                //this.props.auth(true, allSkiDays)
-                //this.props.history.push("/dayList")
+              }
     
-              })
-              .catch(error => console.log(error))  		
-              }            
-
-          })
-
-  
-        
-          })      
- 
-                     
+              if (res.id) {       
+                  localStorage.setItem('token', res.token) 
+                  fetch(RESORT_URL, {
+                      headers: {
+                        'Authorization': localStorage.getItem('token')
+                      }
+                    })  				
+                    .then(res => res.json())					
+                    .then (allSkiDays => {
+                      
+                      this.props.auth(true, allSkiDays)
+                      this.props.history.push("/dayList")
+          
+                    })
+                    .catch(error => console.log(error))  		
+              }            
+           
+        })      
     }    
   
     dismissError() {
@@ -126,8 +116,6 @@ export class SignUpForm extends Component {
       }
 
       else {
-        // HTTP with this.state 
-        // if success > App.js needs to know: 1) days that came back 2) is authorized
         this.authorization()
       }
     }
