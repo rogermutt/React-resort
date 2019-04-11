@@ -69,7 +69,13 @@ export class LoginPage extends Component {
       return this.setState({ error: 'Password is required' });
     }
 
-    login(LOGIN_DETAILS)
+    let loginDetails = {        
+      "email": this.state.username,
+      "password": this.state.password        
+    }
+
+
+    login(loginDetails)
 
     return this.setState({ error: '' });
   }
