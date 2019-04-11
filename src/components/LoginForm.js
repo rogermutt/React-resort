@@ -51,28 +51,24 @@ export class LoginForm extends Component {
         .then(res => res.json())
         .then(res => {
   
-            if (res.error) {
-              for (var message in res.error) {
-                console.log('res ' + res.error[message]);
-                this.setState({ error: res.error[message] });
-              }
-            }
+            if (res.error) 
+            this.setState({ error: "The email or password are incorrect" });
   
             if (res.token) {     
   
-            localStorage.setItem('token', res.token) 
-            fetch(RESORT_URL, {
-                headers: {
-                  'Authorization': localStorage.getItem('token')
-                }
-              })  				
-              .then(res => res.json())					
-              .then (allSkiDays => {
+                localStorage.setItem('token', res.token) 
+                fetch(RESORT_URL, {
+                    headers: {
+                      'Authorization': localStorage.getItem('token')
+                    }
+                })  				
+                .then(res => res.json())					
+                .then (allSkiDays => {
 
-                this.props.auth(true, allSkiDays)
-                this.props.history.push("/dayList")
-    
-              })		
+                  this.props.auth(true, allSkiDays)
+                  this.props.history.push("/dayList")
+      
+                })		
               }
         
           })      
@@ -96,8 +92,6 @@ export class LoginForm extends Component {
       }
 
       else {
-        // HTTP with this.state 
-        // if success > App.js needs to know: 1) days that came back 2) is authorized
         this.authorization()
       }
     }
