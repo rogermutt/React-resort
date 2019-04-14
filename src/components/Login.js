@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 
 const URL_LOGIN = 'http://localhost:3001/authenticate'
 
-const LOGIN_DETAILS = {
-    "email": 'r@r.com', 
-    "password": '123456'
-}
-
 const redirect = () => {
     const request = new Request('http://localhost:3001/api/v1/resorts', {
       headers: new Headers({
