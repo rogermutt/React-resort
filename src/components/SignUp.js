@@ -9,11 +9,6 @@ const HTTP_Request = (url, type, headers = null, body) => {
 	   })  
 }
 
-const LOGIN_DETAILS = {
-  "email": 'r@r.com', 
-  "password": '123456'
-}
-
 function login (loginParams) {  
   return fetch(URL_LOGIN, {
       method: "POST",
@@ -40,13 +35,14 @@ export class SignUpForm extends Component {
     constructor() {
       super();
       this.state = {
-        username: '',
+        name: '',
+        email: '',
         password: '',
         error: '',
       };
-  
+      this.handleNameChange = this.handleNameChange.bind(this);  
       this.handlePassChange = this.handlePassChange.bind(this);
-      this.handleUserChange = this.handleUserChange.bind(this);
+      this.handleEmailChange = this.handleEmailChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
       this.dismissError = this.dismissError.bind(this);
     }
@@ -60,8 +56,8 @@ export class SignUpForm extends Component {
     authorization(callback) {
 
       let signUpDetails = {
-        "name": 'Roger',          
-        "email": this.state.username,
+        "name": this.state.name,          
+        "email": this.state.email,
         "password": this.state.password        
       }
 
@@ -107,9 +103,13 @@ export class SignUpForm extends Component {
     handleSubmit(evt) {
       evt.preventDefault();
   
-      if (!this.state.username) {
-        return this.setState({ error: 'Username is required' });
+      if (!this.state.name) {
+        return this.setState({ error: 'Name is required' });
       }
+
+      if (!this.state.email) {
+        return this.setState({ error: 'Email is required' });
+      }      
 
       else if (!this.state.password) {
         return this.setState({ error: 'Password is required' });
@@ -119,10 +119,16 @@ export class SignUpForm extends Component {
         this.authorization()
       }
     }
-  
-    handleUserChange(evt) {
+
+    handleNameChange(evt) {
       this.setState({
-        username: evt.target.value,
+        name: evt.target.value,
+      });
+    };
+
+    handleEmailChange(evt) {
+      this.setState({
+        email: evt.target.value,
       });
     };
   
@@ -144,8 +150,12 @@ export class SignUpForm extends Component {
                 {this.state.error}
               </h3>
             }
+
+            <label>Name</label>
+            <input type="text" data-test="name" value={this.state.name} onChange={this.handleNameChange} />
+
             <label>Email</label>
-            <input type="text" data-test="username" value={this.state.username} onChange={this.handleUserChange} />
+            <input type="text" data-test="email" value={this.state.email} onChange={this.handleEmailChange} />
   
             <label>Password</label>
             <input type="password" data-test="password" value={this.state.password} onChange={this.handlePassChange} />
