@@ -10,6 +10,7 @@ import { SkiDayList } from './SkiDayList'
 import { SkiDayCount } from './SkiDayCount'
 import { LoginForm } from './LoginForm'
 import { SignUpForm } from './SignUp'
+import { MemberList } from './MemberList'
 import { AddDayForm } from './AddDayForm'
 import { Menu } from './Menu'
 import { Whoops404 } from './Whoops404'
@@ -113,12 +114,18 @@ export const AppRouter = (
                       path="/login" exact 
                       component={() => <LoginWrapper />}
                       />
-
+  
                   <PrivateRoute
                       authState={authState}
                       path="/dayList" 
                       component={() => <SkiDayListWrapper days={daylist} deleteDay={deleteDay} />}
-                      />   
+                      />  
+
+                  <PrivateRoute
+                      authState={authState}
+                      path="/members" 
+                      component={() => <MemberList />}
+                      />  
 
                   <Route component={Whoops404} />
                    
