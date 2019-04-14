@@ -9,21 +9,7 @@ const HTTP_Request = (url, type, headers = null, body) => {
 	   })  
 }
 
-function login (loginParams) {  
-  return fetch(URL_LOGIN, {
-      method: "POST",
-      headers: {
-      "Accept":"application/json",
-      "Content-Type":"application/json"
-      },
-      body: JSON.stringify(loginParams)
-  })
-    .then(res => res.json())     
-    .catch(error => console.log(error))			
-}
-
 const URL_SIGNUP = 'http://localhost:3001/api/v1/users'
-const URL_LOGIN = 'http://localhost:3001/authenticate'
 const RESORT_URL = 'http://localhost:3001/api/v1/resorts'
 
 let logIn_Headers = {
@@ -66,8 +52,6 @@ export class SignUpForm extends Component {
       return HTTP_Request(URL_SIGNUP, "POST", logIn_Headers, JSON.stringify(newUser))
         .then(res => res.json())
         .then(res => {
-
-          console.log(res);
   
               if (res.error) {
                 for (var message in res.error) {
