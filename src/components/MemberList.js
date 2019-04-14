@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { Member } from './Member'
 import fetch from 'isomorphic-fetch'
 
-const URL_API = 'https://api.randomuser.me/?nat=US&results=10'
+const URL_API = 'https://api.randomuser.me/?nat=US&results=1'
 
 export class MemberList extends Component {
 
