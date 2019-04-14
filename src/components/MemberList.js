@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { Member } from './Member'
 import fetch from 'isomorphic-fetch'
 
-const URL_API = 'https://api.randomuser.me/?nat=US&results=1'
+const ALL_USERS = 'http://localhost:3001/api/v1/users#index'
 
 export class MemberList extends Component {
 
@@ -19,10 +19,9 @@ export class MemberList extends Component {
 
     componentDidMount() {
         this.setState({ loading: true })
-        fetch(URL_API)
-        .then( response => response.json() )
-        .then( json => json.results )
-        .then ( members => this.setState({
+        fetch(ALL_USERS)
+        .then( response => response.json() ) 
+        .then( members => this.setState({
             members, 
             loading: false 
         }))
@@ -64,9 +63,9 @@ export class MemberList extends Component {
                                 admin={this.state.administrators.some(
                                     adminEmail => adminEmail === member.email
                                 )}
-                                name={member.name.first + ' ' + member.name.last }
+                                name={member.name }
                                 email={ member.email}
-                                thumbnail={ member.picture.thumbnail}
+                                //thumbnail={ member.picture.thumbnail}
                                 makeAdmin={this.makeAdmin}
                                 removeAdmin={this.removeAdmin}
                         />
