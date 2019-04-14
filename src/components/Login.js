@@ -36,7 +36,7 @@ export class LoginPage extends Component {
   constructor() {
     super();
     this.state = {
-      username: '',
+      email: '',
       password: '',
       error: '',
       redirectToReferrer: false
@@ -56,8 +56,8 @@ export class LoginPage extends Component {
   handleSubmit(evt) {
     evt.preventDefault();
 
-    if (!this.state.username) {
-      return this.setState({ error: 'Username is required' });
+    if (!this.state.email) {
+      return this.setState({ error: 'email is required' });
     }
 
     if (!this.state.password) {
@@ -65,7 +65,7 @@ export class LoginPage extends Component {
     }
 
     let loginDetails = {        
-      "email": this.state.username,
+      "email": this.state.email,
       "password": this.state.password        
     }
 
@@ -77,7 +77,7 @@ export class LoginPage extends Component {
 
   handleUserChange(evt) {
     this.setState({
-      username: evt.target.value,
+      email: evt.target.value,
     });
   };
 
@@ -99,8 +99,8 @@ export class LoginPage extends Component {
               {this.state.error}
             </h3>
           }
-          <label>User Name</label>
-          <input type="text" data-test="username" value={this.state.username} onChange={this.handleUserChange} />
+          <label>Email Address</label>
+          <input type="text" data-test="email" value={this.state.email} onChange={this.handleUserChange} />
 
           <label>Password</label>
           <input type="password" data-test="password" value={this.state.password} onChange={this.handlePassChange} />
