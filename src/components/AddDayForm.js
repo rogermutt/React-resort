@@ -9,22 +9,23 @@ const RESORTS = [
     'E'
 ]
 
-export const AddDayForm =({ resort, powder, backcountry, date, onNewDay}) => {
+export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDay}) => {
 
-        let _resort, _powder, _date, _backcountry
+        let _resort, _powder, _date, _backcountry, _invvalue
 
         const submit = ev => {
             ev.preventDefault()
 
             let rawDate = new Date(_date.value)
 
-            let dateFormatted = rawDate.toLocaleDateString()
+            let dateFormatted = rawDate.toLocaleDateString()  
 
             let newDay = {
                 name: _resort.value,
                 date: dateFormatted,
                 powder: _powder.checked,
-                backcountry: _backcountry.checked
+                backcountry: _backcountry.checked,
+                invvalue: _invvalue.value
             }            
   
             onNewDay(newDay)
@@ -32,7 +33,8 @@ export const AddDayForm =({ resort, powder, backcountry, date, onNewDay}) => {
             _resort.value = '',
             _date.value = '',
             _powder.checked = false,
-            _backcountry.checked = false
+            _backcountry.checked = false,
+            _invvalue = 0
                         
         }
 
@@ -64,6 +66,13 @@ export const AddDayForm =({ resort, powder, backcountry, date, onNewDay}) => {
                             defaultChecked={backcountry}/>
                     <label htmlFor="backcountry">backcountry</label>
                 </div>
+
+                <div>
+                    <input id="invvalue" 
+                            type="text" 
+                            ref={input => _invvalue = input}/>
+                    <label htmlFor="invvalue">invvalue</label>
+                </div>                
 
                 <button>Add Day</button>
                 
