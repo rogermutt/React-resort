@@ -4,12 +4,13 @@ import Calendar from 'react-icons/lib/fa/calendar'
 import { PropTypes } from 'react'
 
 export const SkiDayRow = ({id, name, date, 
-							powder, backcountry, deleteDay}) => (
+							powder, backcountry, invvalue, deleteDay}) => (
 	<tr>
 		<td>{date}</td>
 		<td>{name}</td>
 		<td>{(powder) ? <SnowFlake/> : null}</td>
 		<td>{(backcountry) ? <Terrain /> : null}</td>
+		<td>$ {invvalue}</td>		
 		<td>
 			<form >
 				<button onClick={ ev => {

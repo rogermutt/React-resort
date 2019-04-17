@@ -35,7 +35,7 @@ export const SkiDayList = ({days, deleteDay}) => {
 				</tr>
 			</thead>
 			<tbody>
-				{filteredDays.map((day, i) =>
+				{filteredDays.map((day, i) => 
 					<SkiDayRow key={i} deleteDay={deleteDay}
 							{...day}/>	
 					)}
