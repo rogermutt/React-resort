@@ -46,11 +46,11 @@ export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDa
                               ref={input => _resort = input} />
                 
                 <label htmlFor="date">Date</label>
-                    <input  id="date"
-                            type="date"
-                            defaultValue={date}
-                            ref={input => _date = input}
-                            required />
+                <input  id="date"
+                        type="date"
+                        defaultValue={date}
+                        ref={input => _date = input}
+                        required />
                 <div>
                     <input  id="powder" 
                             type="checkbox"
@@ -84,12 +84,14 @@ AddDayForm.defaultProps = {
     name: 'Aspen',
     date: '1/2/2016',
     powder: true,
-    backcountry: false  
+    backcountry: false,
+    invvalue: 100  
 }
 
 AddDayForm.propTypes = {
     name: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
     powder: PropTypes.bool.isRequired,
-    backcountry: PropTypes.bool.isRequired
+    backcountry: PropTypes.bool.isRequired,
+    invvalue: PropTypes.number.isRequired
 }
