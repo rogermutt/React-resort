@@ -39,7 +39,7 @@ export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDa
         }
 
         return (
-            <form onSubmit={submit}>
+            <form onSubmit={submit} id='newDay'>
 
                 <label htmlFor="resort">Resort</label>
                 <Autocomplete options={RESORTS}
@@ -68,11 +68,15 @@ export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDa
                 </div>
 
                 <div>
+                    <label htmlFor="invvalue">invvalue</label>
                     <input id="invvalue" 
                             type="text" 
                             ref={input => _invvalue = input}/>
-                    <label htmlFor="invvalue">invvalue</label>
-                </div>                
+                </div>    
+
+                <label htmlFor="invoice">invoice</label>
+                <input id="invoice" type="file" name="invoice"  />
+                
 
                 <button>Add Day</button>
                 

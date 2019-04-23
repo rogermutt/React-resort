@@ -80,14 +80,22 @@ export class App extends Component {
 
 	addDay(newDay) {
 
+		let invoice = document.getElementById('invoice').files[0]
+
+		let formData = new FormData();		
+
+		for (let [key, value] of Object.entries(newDay)) {
+			formData.append(key, value);
+			// eventually we will need to remove invvalue from form and simply pass the invoice file
+	}		
+
+		formData.append('invoice', invoice);
+	
 		let headers = {
-			'Authorization': localStorage.getItem('token'),
-			'Content-Type': 'application/json'
-			}
+			'Authorization': localStorage.getItem('token')
+		}
 
-		let newResort = { "resort": newDay }			
-
-			HTTP_Request(RESORT_URL, 'POST', headers, JSON.stringify(newResort))	
+			HTTP_Request(RESORT_URL, 'POST', headers, formData)	
 			.then(res=>res.json())
 			.then(newDay => {
 				this.setState({ 
