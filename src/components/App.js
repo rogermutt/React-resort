@@ -37,6 +37,7 @@ export class App extends Component {
 		this.authenticate = this.authenticate.bind(this)
 		this.signout = this.signout.bind(this)
 		this.changeLoadStatus = this.changeLoadStatus.bind(this)
+		this.postNewDay = this.postNewDay.bind(this)
 	}
 
     componentDidMount() {
