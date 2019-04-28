@@ -9,7 +9,7 @@ const RESORTS = [
     'E'
 ]
 
-export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDay}) => {
+export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDay, history}) => {
 
         let _resort, _powder, _date, _backcountry, _invvalue
 
@@ -29,6 +29,8 @@ export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDa
             }            
   
             onNewDay(newDay)
+            
+            
 
             _resort.value = '',
             _date.value = '',

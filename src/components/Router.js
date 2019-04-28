@@ -27,6 +27,14 @@ const SignUpWrapper = withRouter(
   }
 );
 
+const AddDayWrapper = withRouter(
+  ({ history, ...props }) => {    
+    return <AddDayForm onNewDay={props.onNewDay} history={history}/>
+  }
+)
+
+
+
 const Logout = withRouter(
     ({ history, ...props }) =>
           <button
@@ -35,6 +43,17 @@ const Logout = withRouter(
             Log out
           </button>
 );
+
+function AddDayRoute({component: Component, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={props =>    
+         <AddDayWrapper auth={rest.auth} onNewDay={rest.onNewDay} />
+      }
+    />
+  );
+}
 
 function SignUpRoute({component: Component, ...rest }) {
   return (
@@ -95,10 +114,11 @@ export const AppRouter = (
                       component={() => <SkiDayCount skiDayCount={skiDayCount}/>}
                       />
                       
-                  <PrivateRoute                  
+                  <AddDayRoute                  
                       authState={authState} 
+                      onNewDay={onNewDay}
                       path="/addDay" exact 
-                      component={() => <AddDayForm onNewDay={onNewDay}/>}
+                      component={() => <AddDayWrapper />}
                       />
 
                   <PrivateRoute 
