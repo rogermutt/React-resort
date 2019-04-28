@@ -9,7 +9,9 @@ const RESORTS = [
     'E'
 ]
 
-export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDay}) => {
+const redirect = history => history.push("/dayList")
+
+export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDay, history}) => {
 
         let _resort, _powder, _date, _backcountry, _invvalue
 
@@ -26,9 +28,9 @@ export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDa
                 powder: _powder.checked,
                 backcountry: _backcountry.checked,
                 invvalue: _invvalue.value
-            }            
-  
-            onNewDay(newDay)
+            }  
+            
+            onNewDay(newDay, redirect(history))
 
             _resort.value = '',
             _date.value = '',

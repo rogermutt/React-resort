@@ -78,7 +78,7 @@ export class App extends Component {
 			})	
 	}	
 
-	addDay(newDay) {
+	addDay(newDay, cb) {
 
 		let invoice = document.getElementById('invoice').files[0]
 
@@ -101,8 +101,8 @@ export class App extends Component {
 				this.setState({ 
 					allSkiDays: [...this.state.allSkiDays, newDay]}, 
 					() => console.log(newDay)
-					);	
-			});			
+					)	
+			}).then(() => cb)		
 	}
 
 	deleteDay(idToDelete) {
