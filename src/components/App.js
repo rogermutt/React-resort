@@ -28,13 +28,15 @@ export class App extends Component {
 		super(props)
 		this.state = {
 			allSkiDays: [],
-			isAuthenticated: false
+			isAuthenticated: false,
+			loading: false
 		}
 
 		this.addDay = this.addDay.bind(this)
 		this.deleteDay = this.deleteDay.bind(this)
 		this.authenticate = this.authenticate.bind(this)
 		this.signout = this.signout.bind(this)
+		this.changeLoadStatus = this.changeLoadStatus.bind(this)
 	}
 
     componentDidMount() {
@@ -76,9 +78,17 @@ export class App extends Component {
 				localStorage.removeItem('token')
 				cb()	
 			})	
-	}	
+	}
+	
+	changeLoadStatus () {
+		this.setState(prevState => ({
+			loading: !prevState.loading
+		}));		
+	}
 
 	addDay(newDay, cb) {
+
+		this.changeLoadStatus()
 
 		let invoice = document.getElementById('invoice').files[0]
 
@@ -102,7 +112,10 @@ export class App extends Component {
 					allSkiDays: [...this.state.allSkiDays, newDay]}, 
 					() => console.log(newDay)
 					)	
-			}).then(() => cb)		
+			}).then(() => {
+				this.changeLoadStatus()
+				cb
+			})		
 	}
 
 	deleteDay(idToDelete) {
@@ -134,28 +147,41 @@ export class App extends Component {
 			(day) => (filter) ? day[filter] : day).length
 	}
 
-	render() {
-		
-		return (
-			<div className="app">
 
-				<AppRouter 
-					authState={this.state.isAuthenticated} 
-					auth={this.authenticate}
-					signout={this.signout}
-					daylist={this.state.allSkiDays}
-					onNewDay={this.addDay}
-					deleteDay={this.deleteDay}
-					skiDayCount={{
-						total: this.countDays(), 
-						powder:this.countDays( "powder" ),
-						backcountry:this.countDays( "backcountry" )
-					}}
-				/>
+  render () {
+    let content;
 
-			</div>
-		)
+    if (this.state.loading) {
+			return (
+				<div className="app" >
+					<div>Loading...</div>
+				</div>
+			)			
+    } else { 
+
+        return (
+					<div className="app" >
+							<AppRouter 
+								authState={this.state.isAuthenticated} 
+								auth={this.authenticate}
+								signout={this.signout}
+								daylist={this.state.allSkiDays}
+								onNewDay={this.addDay}
+								deleteDay={this.deleteDay}
+								skiDayCount={{
+									total: this.countDays(), 
+									powder:this.countDays( "powder" ),
+									backcountry:this.countDays( "backcountry" )
+								}}
+							/>
+				</div>
+        )
+      
+    }
+
+
 	}
+		
 }
 
 
