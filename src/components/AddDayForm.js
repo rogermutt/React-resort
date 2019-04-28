@@ -11,9 +11,9 @@ const RESORTS = [
 
 const redirect = history => history.push("/dayList")
 
-export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDay, history}) => {
+export const AddDayForm =({ resort, powder, backcountry, date, onNewDay, history}) => {
 
-        let _resort, _powder, _date, _backcountry, _invvalue
+        let _resort, _powder, _date, _backcountry
 
         const submit = ev => {
             ev.preventDefault()
@@ -26,8 +26,7 @@ export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDa
                 name: _resort.value,
                 date: dateFormatted,
                 powder: _powder.checked,
-                backcountry: _backcountry.checked,
-                invvalue: _invvalue.value
+                backcountry: _backcountry.checked
             }  
             
             onNewDay(newDay, redirect(history))
@@ -35,8 +34,7 @@ export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDa
             _resort.value = '',
             _date.value = '',
             _powder.checked = false,
-            _backcountry.checked = false,
-            _invvalue = 0
+            _backcountry.checked = false
                         
         }
 
@@ -67,14 +65,7 @@ export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDa
                             ref={input => _backcountry = input}
                             defaultChecked={backcountry}/>
                     <label htmlFor="backcountry">backcountry</label>
-                </div>
-
-                <div>
-                    <label htmlFor="invvalue">invvalue</label>
-                    <input id="invvalue" 
-                            type="text" 
-                            ref={input => _invvalue = input}/>
-                </div>    
+                </div>  
 
                 <label htmlFor="invoice">invoice</label>
                 <input id="invoice" type="file" name="invoice"  />
@@ -90,14 +81,12 @@ AddDayForm.defaultProps = {
     name: 'Aspen',
     date: '1/2/2016',
     powder: true,
-    backcountry: false,
-    invvalue: 100  
+    backcountry: false
 }
 
 AddDayForm.propTypes = {
     name: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
     powder: PropTypes.bool.isRequired,
-    backcountry: PropTypes.bool.isRequired,
-    invvalue: PropTypes.number.isRequired
+    backcountry: PropTypes.bool.isRequired
 }
