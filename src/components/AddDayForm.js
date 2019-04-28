@@ -29,8 +29,7 @@ export const AddDayForm =({ resort, powder, backcountry, date, invvalue, onNewDa
             }            
   
             onNewDay(newDay)
-            
-            
+            history.push("/dayList")
 
             _resort.value = '',
             _date.value = '',
