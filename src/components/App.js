@@ -37,6 +37,7 @@ export class App extends Component {
 		this.authenticate = this.authenticate.bind(this)
 		this.signout = this.signout.bind(this)
 		this.changeLoadStatus = this.changeLoadStatus.bind(this)
+		this.postNewDay = this.postNewDay.bind(this)
 	}
 
     componentDidMount() {
@@ -86,6 +87,25 @@ export class App extends Component {
 		}));		
 	}
 
+	postNewDay (invoice_data, callback) {
+
+		let headers = {
+			'Authorization': localStorage.getItem('token')
+		}
+
+			HTTP_Request(RESORT_URL, 'POST', headers, invoice_data)	
+			.then(res=>res.json())
+			.then(newDay => {
+				this.setState({ 
+					allSkiDays: [...this.state.allSkiDays, newDay]}, 
+					() => console.log(newDay)
+					)	
+			}).then(() => {
+				this.changeLoadStatus()
+				callback
+			})	
+	}
+
 	addDay(newDay, cb) {
 
 		this.changeLoadStatus()
@@ -96,26 +116,12 @@ export class App extends Component {
 
 		for (let [key, value] of Object.entries(newDay)) {
 			formData.append(key, value);
-			// eventually we will need to remove invvalue from form and simply pass the invoice file
-	}		
+		}		
 
 		formData.append('invoice', invoice);
 	
-		let headers = {
-			'Authorization': localStorage.getItem('token')
-		}
-
-			HTTP_Request(RESORT_URL, 'POST', headers, formData)	
-			.then(res=>res.json())
-			.then(newDay => {
-				this.setState({ 
-					allSkiDays: [...this.state.allSkiDays, newDay]}, 
-					() => console.log(newDay)
-					)	
-			}).then(() => {
-				this.changeLoadStatus()
-				cb
-			})		
+		this.postNewDay (formData, cb)
+	
 	}
 
 	deleteDay(idToDelete) {
