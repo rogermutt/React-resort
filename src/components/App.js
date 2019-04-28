@@ -149,39 +149,31 @@ export class App extends Component {
 
 
   render () {
-    let content;
 
-    if (this.state.loading) {
-			return (
-				<div className="app" >
-					<div>Loading...</div>
-				</div>
-			)			
-    } else { 
-
-        return (
-					<div className="app" >
-							<AppRouter 
-								authState={this.state.isAuthenticated} 
-								auth={this.authenticate}
-								signout={this.signout}
-								daylist={this.state.allSkiDays}
-								onNewDay={this.addDay}
-								deleteDay={this.deleteDay}
-								skiDayCount={{
-									total: this.countDays(), 
-									powder:this.countDays( "powder" ),
-									backcountry:this.countDays( "backcountry" )
-								}}
-							/>
-				</div>
-        )
-      
-    }
-
-
-	}
-		
+		return this.state.loading ? 
+				
+				(<div className="app" >
+						<div>Loading...</div>
+						<p>In the back end > resorts controller > lines 33 to 38 make the delay</p>					
+					</div>
+				)	: (
+							<div className="app" >
+									<AppRouter 
+										authState={this.state.isAuthenticated} 
+										auth={this.authenticate}
+										signout={this.signout}
+										daylist={this.state.allSkiDays}
+										onNewDay={this.addDay}
+										deleteDay={this.deleteDay}
+										skiDayCount={{
+											total: this.countDays(), 
+											powder:this.countDays( "powder" ),
+											backcountry:this.countDays( "backcountry" )
+										}}
+									/>
+						</div>
+						)
+    }	
 }
 
 
