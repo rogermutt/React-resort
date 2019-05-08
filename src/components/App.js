@@ -3,6 +3,8 @@ import { AppRouter } from './Router'
 
 const RESORT_URL = 'http://localhost:3001/api/v1/resorts'
 
+const SUBMIT_URL = 'http://localhost:3001/api/v1/resorts/1/submit' 
+
 const URL_LOGIN = 'http://localhost:3001/authenticate'
 
 const HEADERS = {
@@ -37,7 +39,8 @@ export class App extends Component {
 		this.authenticate = this.authenticate.bind(this)
 		this.signout = this.signout.bind(this)
 		this.changeLoadStatus = this.changeLoadStatus.bind(this)
-		this.postNewDay = this.postNewDay.bind(this)
+		this.previewDay = this.previewDay.bind(this)
+		this.saveNewDay = this.saveNewDay.bind(this)
 	}
 
     componentDidMount() {
@@ -87,19 +90,49 @@ export class App extends Component {
 		}));		
 	}
 
-	postNewDay (invoice_data, callback) {
+	saveNewDay (newDay, callback) {
 
 		let headers = {
 			'Authorization': localStorage.getItem('token')
-		}
+		}		
 
-			HTTP_Request(RESORT_URL, 'POST', headers, invoice_data)	
+		let formData = new FormData();		
+
+		for (let [key, value] of Object.entries(newDay)) {
+			formData.append(key, value);
+		}				
+
+		HTTP_Request(RESORT_URL, 'POST', headers, formData)	
+		.then(res=>res.json())
+		.then(newDay => {
+
+				this.setState({ 
+					allSkiDays: [...this.state.allSkiDays, newDay] }, ()=>{
+						console.log(newDay)	
+
+						this.setState({ 
+							loading: false
+						})
+						// this.changeLoadStatus()
+						localStorage.removeItem('newDay')
+						localStorage.removeItem('invoice_value')			
+						callback
+					}
+				)		
+		})
+
+	}			
+
+	previewDay (invoice_data, callback) {
+
+			let headers = {
+				'Authorization': localStorage.getItem('token')
+			}
+
+			HTTP_Request(SUBMIT_URL, 'POST', headers, invoice_data)	
 			.then(res=>res.json())
 			.then(newDay => {
-				this.setState({ 
-					allSkiDays: [...this.state.allSkiDays, newDay]}, 
-					() => console.log(newDay)
-					)	
+					localStorage.setItem('invoice_value', JSON.stringify(newDay.invoice_value))
 			}).then(() => {
 				this.changeLoadStatus()
 				callback
@@ -108,19 +141,18 @@ export class App extends Component {
 
 	addDay(newDay, cb) {
 
+
 		this.changeLoadStatus()
 
 		let invoice = document.getElementById('invoice').files[0]
 
-		let formData = new FormData();		
+		localStorage.setItem('newDay', JSON.stringify(newDay))
 
-		for (let [key, value] of Object.entries(newDay)) {
-			formData.append(key, value);
-		}		
+		let formData = new FormData();		
 
 		formData.append('invoice', invoice);
 	
-		this.postNewDay (formData, cb)
+		this.previewDay (formData, cb)
 	
 	}
 
@@ -170,6 +202,7 @@ export class App extends Component {
 										signout={this.signout}
 										daylist={this.state.allSkiDays}
 										onNewDay={this.addDay}
+										saveNewDay={this.saveNewDay}
 										deleteDay={this.deleteDay}
 										skiDayCount={{
 											total: this.countDays(), 

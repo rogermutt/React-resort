@@ -9,32 +9,40 @@ const RESORTS = [
     'E'
 ]
 
-const redirect = history => history.push("/preview")
+const redirect = history => history.push("/dayList")
 
-export const AddDayForm =({ resort, powder, backcountry, date, onNewDay, history}) => {
+export const PreviewForm =({ resort, powder, backcountry, date, saveNewDay, history}) => {
 
-        let _resort, _powder, _date, _backcountry
+        let empty, _resort, _date, _powder, _backcountry, _invoice_value
+        
+        let stored_invoice_value = JSON.parse(localStorage.getItem('invoice_value'))
+
+        var storedDay = JSON.parse(localStorage.getItem('newDay'))     
 
         const submit = ev => {
             ev.preventDefault()
 
             let rawDate = new Date(_date.value)
 
+            console.log(rawDate);
+            
             let dateFormatted = rawDate.toLocaleDateString()  
 
-            let newDay = {
+            let newDay = { 
                 name: _resort.value,
                 date: dateFormatted,
                 powder: _powder.checked,
-                backcountry: _backcountry.checked
+                backcountry: _backcountry.checked,
+                invvalue: _invoice_value.value
             }  
             
-            onNewDay(newDay, redirect(history))
+            saveNewDay(newDay, redirect(history))
 
             _resort.value = '',
             _date.value = '',
             _powder.checked = false,
-            _backcountry.checked = false
+            _backcountry.checked = false,
+            _invoice_value = 0
                         
         }
 
@@ -42,20 +50,25 @@ export const AddDayForm =({ resort, powder, backcountry, date, onNewDay, history
             <form onSubmit={submit} id='newDay'>
 
                 <label htmlFor="resort">Resort</label>
-                <Autocomplete options={RESORTS}
-                              ref={input => _resort = input} />
+                <input  id="resort"
+                        type="text"
+                        defaultValue={storedDay.name}
+                        ref={input => _resort = input}
+                        required />
+
                 
                 <label htmlFor="date">Date</label>
                 <input  id="date"
                         type="date"
-                        defaultValue={date}
+                        defaultValue="2014-05-05"
                         ref={input => _date = input}
                         required />
+                        {/* storedDay above to be changd when date variable  */}
                 <div>
                     <input  id="powder" 
                             type="checkbox"
                             ref={input => _powder = input} 
-                            defaultChecked={powder} />
+                            defaultChecked={storedDay.powder} />
                     <label htmlFor="powder">powder</label>
                 </div>
 
@@ -63,28 +76,31 @@ export const AddDayForm =({ resort, powder, backcountry, date, onNewDay, history
                     <input id="backcountry" 
                             type="checkbox" 
                             ref={input => _backcountry = input}
-                            defaultChecked={backcountry}/>
+                            defaultChecked={storedDay.backcountry}/>
                     <label htmlFor="backcountry">backcountry</label>
                 </div>  
 
-                <label htmlFor="invoice">invoice</label>
-                <input id="invoice" type="file" name="invoice"  />
+                <label htmlFor="invoice_value">invoice</label>
+                <input  id="invoice_value"
+                        type="text"
+                        defaultValue={stored_invoice_value}
+                        ref={input => _invoice_value = input}
+                        required />                
                 
-
                 <button>Add Day</button>
                 
             </form>
         )
 }
 
-AddDayForm.defaultProps = {
+PreviewForm.defaultProps = {
     name: 'Aspen',
     date: '1/2/2016',
     powder: true,
     backcountry: false
 }
 
-AddDayForm.propTypes = {
+PreviewForm.propTypes = {
     name: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
     powder: PropTypes.bool.isRequired,

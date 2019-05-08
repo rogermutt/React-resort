@@ -12,6 +12,7 @@ import { LoginForm } from './LoginForm'
 import { SignUpForm } from './SignUp'
 import { MemberList } from './MemberList'
 import { AddDayForm } from './AddDayForm'
+import { PreviewForm } from './PreviewForm'
 import { Menu } from './Menu'
 import { Whoops404 } from './Whoops404'
 
@@ -33,7 +34,11 @@ const AddDayWrapper = withRouter(
   }
 )
 
-
+const PreviewWrapper = withRouter(
+  ({ history, ...props }) => {    
+    return <PreviewForm saveNewDay={props.saveNewDay} history={history}/>
+  }
+)
 
 const Logout = withRouter(
     ({ history, ...props }) =>
@@ -43,6 +48,18 @@ const Logout = withRouter(
             Log out
           </button>
 );
+
+
+function PreviewRoute({component: Component, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={props =>    
+         <PreviewWrapper auth={rest.auth} saveNewDay={rest.saveNewDay} />
+      }
+    />
+  );
+}
 
 function AddDayRoute({component: Component, ...rest }) {
   return (
@@ -86,7 +103,7 @@ const SkiDayListWrapper=({days, deleteDay})=> {
 }
 
 export const AppRouter = (
-  {auth, authState, daylist, signout, onNewDay, deleteDay, skiDayCount}
+  {auth, authState, daylist, signout, onNewDay, saveNewDay, deleteDay, skiDayCount}
   ) => {
     return (
       <Router>
@@ -114,6 +131,13 @@ export const AppRouter = (
                       component={() => <SkiDayCount skiDayCount={skiDayCount}/>}
                       />
                       
+                  <PreviewRoute                  
+                      authState={authState} 
+                      saveNewDay={saveNewDay}
+                      path="/preview" exact 
+                      component={() => <PreviewWrapper />}
+                      />
+
                   <AddDayRoute                  
                       authState={authState} 
                       onNewDay={onNewDay}
