@@ -107,17 +107,19 @@ export class App extends Component {
 		.then(newDay => {
 
 				this.setState({ 
-					allSkiDays: [...this.state.allSkiDays, newDay] }, 
-					() => console.log(newDay)	
+					allSkiDays: [...this.state.allSkiDays, newDay] }, ()=>{
+						console.log(newDay)	
+
+						this.setState({ 
+							loading: false
+						})
+						// this.changeLoadStatus()
+						localStorage.removeItem('newDay')
+						localStorage.removeItem('invoice_value')			
+						callback
+					}
 				)		
-
-		}).then(() => {
-			localStorage.removeItem('newDay')
-			localStorage.removeItem('invoice_value')			
-			this.changeLoadStatus()
-			callback
-		})			
-
+		})
 
 	}			
 
