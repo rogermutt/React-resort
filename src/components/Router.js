@@ -36,7 +36,7 @@ const AddDayWrapper = withRouter(
 
 const PreviewWrapper = withRouter(
   ({ history, ...props }) => {    
-    return <PreviewForm onNewDay={props.onNewDay} history={history}/>
+    return <PreviewForm saveNewDay={props.saveNewDay} history={history}/>
   }
 )
 
@@ -103,7 +103,7 @@ const SkiDayListWrapper=({days, deleteDay})=> {
 }
 
 export const AppRouter = (
-  {auth, authState, daylist, signout, onNewDay, deleteDay, skiDayCount}
+  {auth, authState, daylist, signout, onNewDay, saveNewDay, deleteDay, skiDayCount}
   ) => {
     return (
       <Router>
@@ -133,7 +133,7 @@ export const AppRouter = (
                       
                   <PreviewRoute                  
                       authState={authState} 
-                      onNewDay={onNewDay}
+                      saveNewDay={saveNewDay}
                       path="/preview" exact 
                       component={() => <PreviewWrapper />}
                       />

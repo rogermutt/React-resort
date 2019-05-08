@@ -11,29 +11,29 @@ const RESORTS = [
 
 const redirect = history => history.push("/dayList")
 
-export const PreviewForm =({ resort, powder, backcountry, date, onNewDay, history}) => {
+export const PreviewForm =({ resort, powder, backcountry, date, saveNewDay, history}) => {
 
-        console.log('localStorage 1 ', JSON.parse(localStorage.getItem('newDay')) );
+        let empty
+        
+        let _invoice_value = JSON.parse(localStorage.getItem('invoice_value'))
 
-        console.log('localStorage 2 ', JSON.parse(localStorage.getItem('invoice_value')) );
-
-        let _resort, _powder, _date, _backcountry
+        var storedDay = JSON.parse(localStorage.getItem('newDay'))     
 
         const submit = ev => {
             ev.preventDefault()
 
-            let rawDate = new Date(_date.value)
+            // let rawDate = new Date(_date.value)
 
-            let dateFormatted = rawDate.toLocaleDateString()  
+            // let dateFormatted = rawDate.toLocaleDateString()  
 
-            let newDay = {
-                name: _resort.value,
-                date: dateFormatted,
-                powder: _powder.checked,
-                backcountry: _backcountry.checked
-            }  
+            // let newDay = {
+            //     name: _resort.value,
+            //     date: dateFormatted,
+            //     powder: _powder.checked,
+            //     backcountry: _backcountry.checked
+            // }  
             
-            onNewDay(newDay, redirect(history))
+            saveNewDay(newDay, redirect(history))
 
             _resort.value = '',
             _date.value = '',
@@ -46,35 +46,43 @@ export const PreviewForm =({ resort, powder, backcountry, date, onNewDay, histor
             <form onSubmit={submit} id='newDay'>
 
                 <label htmlFor="resort">Resort</label>
-                <Autocomplete options={RESORTS}
-                              ref={input => _resort = input} />
+                <input  id="resort"
+                        type="text"
+                        defaultValue={storedDay.name}
+                        ref={input => empty = input}
+                        required />
+
                 
                 <label htmlFor="date">Date</label>
                 <input  id="date"
                         type="date"
-                        defaultValue={date}
-                        ref={input => _date = input}
+                        defaultValue="2014-05-05"
+                        ref={input => empty = input}
                         required />
+                        {/* storedDay above to be changd when date variable  */}
                 <div>
                     <input  id="powder" 
                             type="checkbox"
-                            ref={input => _powder = input} 
-                            defaultChecked={powder} />
+                            ref={input => empty = input} 
+                            defaultChecked={storedDay.powder} />
                     <label htmlFor="powder">powder</label>
                 </div>
 
                 <div>
                     <input id="backcountry" 
                             type="checkbox" 
-                            ref={input => _backcountry = input}
-                            defaultChecked={backcountry}/>
+                            ref={input => empty = input}
+                            defaultChecked={storedDay.backcountry}/>
                     <label htmlFor="backcountry">backcountry</label>
                 </div>  
 
                 <label htmlFor="invoice">invoice</label>
-                <input id="invoice" type="file" name="invoice"  />
+                <input  id="invoice"
+                        type="text"
+                        defaultValue={_invoice_value}
+                        ref={input => empty = input}
+                        required />                
                 
-
                 <button>Add Day</button>
                 
             </form>
