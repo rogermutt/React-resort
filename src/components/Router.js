@@ -55,7 +55,7 @@ function PreviewRoute({component: Component, ...rest }) {
     <Route
       {...rest}
       render={props =>    
-         <PreviewWrapper auth={rest.auth} onNewDay={rest.onNewDay} />
+         <PreviewWrapper auth={rest.auth} saveNewDay={rest.saveNewDay} />
       }
     />
   );

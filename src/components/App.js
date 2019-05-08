@@ -92,6 +92,10 @@ export class App extends Component {
 
 	saveNewDay (newDay, callback) {
 
+		let headers = {
+			'Authorization': localStorage.getItem('token')
+		}		
+
 		let formData = new FormData();		
 
 		for (let [key, value] of Object.entries(newDay)) {

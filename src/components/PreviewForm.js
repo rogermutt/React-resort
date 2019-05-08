@@ -13,32 +13,36 @@ const redirect = history => history.push("/dayList")
 
 export const PreviewForm =({ resort, powder, backcountry, date, saveNewDay, history}) => {
 
-        let empty
+        let empty, _resort, _date, _powder, _backcountry, _invoice_value
         
-        let _invoice_value = JSON.parse(localStorage.getItem('invoice_value'))
+        let stored_invoice_value = JSON.parse(localStorage.getItem('invoice_value'))
 
         var storedDay = JSON.parse(localStorage.getItem('newDay'))     
 
         const submit = ev => {
             ev.preventDefault()
 
-            // let rawDate = new Date(_date.value)
+            let rawDate = new Date(_date.value)
 
-            // let dateFormatted = rawDate.toLocaleDateString()  
+            console.log(rawDate);
+            
+            let dateFormatted = rawDate.toLocaleDateString()  
 
-            // let newDay = {
-            //     name: _resort.value,
-            //     date: dateFormatted,
-            //     powder: _powder.checked,
-            //     backcountry: _backcountry.checked
-            // }  
+            let newDay = { 
+                name: _resort.value,
+                date: dateFormatted,
+                powder: _powder.checked,
+                backcountry: _backcountry.checked,
+                invvalue: _invoice_value.value
+            }  
             
             saveNewDay(newDay, redirect(history))
 
             _resort.value = '',
             _date.value = '',
             _powder.checked = false,
-            _backcountry.checked = false
+            _backcountry.checked = false,
+            _invoice_value = 0
                         
         }
 
@@ -49,7 +53,7 @@ export const PreviewForm =({ resort, powder, backcountry, date, saveNewDay, hist
                 <input  id="resort"
                         type="text"
                         defaultValue={storedDay.name}
-                        ref={input => empty = input}
+                        ref={input => _resort = input}
                         required />
 
                 
@@ -57,13 +61,13 @@ export const PreviewForm =({ resort, powder, backcountry, date, saveNewDay, hist
                 <input  id="date"
                         type="date"
                         defaultValue="2014-05-05"
-                        ref={input => empty = input}
+                        ref={input => _date = input}
                         required />
                         {/* storedDay above to be changd when date variable  */}
                 <div>
                     <input  id="powder" 
                             type="checkbox"
-                            ref={input => empty = input} 
+                            ref={input => _powder = input} 
                             defaultChecked={storedDay.powder} />
                     <label htmlFor="powder">powder</label>
                 </div>
@@ -71,16 +75,16 @@ export const PreviewForm =({ resort, powder, backcountry, date, saveNewDay, hist
                 <div>
                     <input id="backcountry" 
                             type="checkbox" 
-                            ref={input => empty = input}
+                            ref={input => _backcountry = input}
                             defaultChecked={storedDay.backcountry}/>
                     <label htmlFor="backcountry">backcountry</label>
                 </div>  
 
-                <label htmlFor="invoice">invoice</label>
-                <input  id="invoice"
+                <label htmlFor="invoice_value">invoice</label>
+                <input  id="invoice_value"
                         type="text"
-                        defaultValue={_invoice_value}
-                        ref={input => empty = input}
+                        defaultValue={stored_invoice_value}
+                        ref={input => _invoice_value = input}
                         required />                
                 
                 <button>Add Day</button>
