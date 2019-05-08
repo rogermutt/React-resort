@@ -103,8 +103,9 @@ export class App extends Component {
 				// 	allSkiDays: [...this.state.allSkiDays, newDay]}, 
 				// 	() => console.log(newDay)
 				// 	)	
+				
 				console.log('from the BE ',newDay);
-				console.log('localStorage ', localStorage.getItem('newDay'));
+				console.log('localStorage ', JSON.parse(localStorage.getItem('newDay')) );
 				
 			}).then(() => {
 				this.changeLoadStatus()
@@ -119,7 +120,7 @@ export class App extends Component {
 
 		let invoice = document.getElementById('invoice').files[0]
 
-		localStorage.setItem('newDay', newDay)
+		localStorage.setItem('newDay', JSON.stringify(newDay))
 
 		let formData = new FormData();		
 
