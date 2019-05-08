@@ -9,7 +9,7 @@ const RESORTS = [
     'E'
 ]
 
-const redirect = history => history.push("/dayList")
+const redirect = history => history.push("/preview")
 
 export const AddDayForm =({ resort, powder, backcountry, date, onNewDay, history}) => {
 

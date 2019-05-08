@@ -89,24 +89,24 @@ export class App extends Component {
 		}));		
 	}
 
+					// this.setState({ 
+				// 	allSkiDays: [...this.state.allSkiDays, newDay]}, 
+				// 	() => console.log(newDay)
+				// 	)
+				
+				
+				// 	console.log('localStorage ', JSON.parse(localStorage.getItem('newDay')) );
+
 	postNewDay (invoice_data, callback) {
 
-		let headers = {
-			'Authorization': localStorage.getItem('token')
-		}
+			let headers = {
+				'Authorization': localStorage.getItem('token')
+			}
 
 			HTTP_Request(SUBMIT_URL, 'POST', headers, invoice_data)	
 			.then(res=>res.json())
 			.then(newDay => {
-
-				// this.setState({ 
-				// 	allSkiDays: [...this.state.allSkiDays, newDay]}, 
-				// 	() => console.log(newDay)
-				// 	)	
-				
-				console.log('from the BE ',newDay);
-				console.log('localStorage ', JSON.parse(localStorage.getItem('newDay')) );
-				
+					localStorage.setItem('invoice_value', JSON.stringify(newDay.invoice_value))
 			}).then(() => {
 				this.changeLoadStatus()
 				callback

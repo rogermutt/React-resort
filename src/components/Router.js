@@ -33,6 +33,11 @@ const AddDayWrapper = withRouter(
   }
 )
 
+const PreviewWrapper = withRouter(
+  ({ history, ...props }) => {    
+    return <PreviewForm onNewDay={props.onNewDay} history={history}/>
+  }
+)
 
 
 const Logout = withRouter(
@@ -43,6 +48,18 @@ const Logout = withRouter(
             Log out
           </button>
 );
+
+
+function PreviewRoute({component: Component, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={props =>    
+         <PreviewWrapper auth={rest.auth} onNewDay={rest.onNewDay} />
+      }
+    />
+  );
+}
 
 function AddDayRoute({component: Component, ...rest }) {
   return (
