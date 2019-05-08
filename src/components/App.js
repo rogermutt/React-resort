@@ -3,6 +3,8 @@ import { AppRouter } from './Router'
 
 const RESORT_URL = 'http://localhost:3001/api/v1/resorts'
 
+const SUBMIT_URL = 'http://localhost:3001/api/v1/resorts/1/submit' 
+
 const URL_LOGIN = 'http://localhost:3001/authenticate'
 
 const HEADERS = {
@@ -93,13 +95,17 @@ export class App extends Component {
 			'Authorization': localStorage.getItem('token')
 		}
 
-			HTTP_Request(RESORT_URL, 'POST', headers, invoice_data)	
+			HTTP_Request(SUBMIT_URL, 'POST', headers, invoice_data)	
 			.then(res=>res.json())
 			.then(newDay => {
-				this.setState({ 
-					allSkiDays: [...this.state.allSkiDays, newDay]}, 
-					() => console.log(newDay)
-					)	
+
+				// this.setState({ 
+				// 	allSkiDays: [...this.state.allSkiDays, newDay]}, 
+				// 	() => console.log(newDay)
+				// 	)	
+				console.log('from the BE ',newDay);
+				console.log('localStorage ', localStorage.getItem('newDay'));
+				
 			}).then(() => {
 				this.changeLoadStatus()
 				callback
@@ -108,15 +114,18 @@ export class App extends Component {
 
 	addDay(newDay, cb) {
 
+
 		this.changeLoadStatus()
 
 		let invoice = document.getElementById('invoice').files[0]
 
+		localStorage.setItem('newDay', newDay)
+
 		let formData = new FormData();		
 
-		for (let [key, value] of Object.entries(newDay)) {
-			formData.append(key, value);
-		}		
+		// for (let [key, value] of Object.entries(newDay)) {
+		// 	formData.append(key, value);
+		// }		
 
 		formData.append('invoice', invoice);
 	
