@@ -69,10 +69,10 @@ export const PreviewForm =({ saveNewDay, history }) => {
                 <label htmlFor="date">Date</label>
                 <input  id="date"
                         type="date"
-                        defaultValue="2014-5-5"
+                        defaultValue={formattedDate}
                         ref={input => _date = input}
                         required />
-                        {/* storedDay above to be changd when date variable  */}
+
                 <div>
                     <input  id="powder" 
                             type="checkbox"
