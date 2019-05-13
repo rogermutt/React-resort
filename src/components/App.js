@@ -144,15 +144,15 @@ export class App extends Component {
 
 		this.changeLoadStatus()
 
-		let invoice = document.getElementById('invoice').files[0]
+		let invoiceFile = document.getElementById('invoice').files[0]
 
 		localStorage.setItem('newDay', JSON.stringify(newDay))
 
-		let formData = new FormData();		
+		let formWithInvoice = new FormData();		
 
-		formData.append('invoice', invoice);
+		formWithInvoice.append('invoice', invoiceFile);
 	
-		this.previewDay (formData, cb)
+		this.previewDay (formWithInvoice, cb)
 	
 	}
 

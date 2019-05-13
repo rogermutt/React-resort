@@ -9,15 +9,24 @@ const RESORTS = [
     'E'
 ]
 
+const stringDate = string => {
+    let a = string.split('/')
+    let day = a[0] > 9 ? a[0] : 0 + a[0]  
+    let month = a[1] > 9 ? a[1] : 0 + a[1]  
+    return string.length === 0 ? "2014-05-05" : `${a[2]}-${month}-${day}`
+}
+
 const redirect = history => history.push("/dayList")
 
-export const PreviewForm =({ resort, powder, backcountry, date, saveNewDay, history}) => {
-
+export const PreviewForm =({ saveNewDay, history }) => {
+    
         let empty, _resort, _date, _powder, _backcountry, _invoice_value
         
         let stored_invoice_value = JSON.parse(localStorage.getItem('invoice_value'))
 
-        var storedDay = JSON.parse(localStorage.getItem('newDay'))     
+        let storedDay = JSON.parse(localStorage.getItem('newDay'))   
+
+        let formattedDate = stringDate(storedDay.date)
 
         const submit = ev => {
             ev.preventDefault()
@@ -60,7 +69,7 @@ export const PreviewForm =({ resort, powder, backcountry, date, saveNewDay, hist
                 <label htmlFor="date">Date</label>
                 <input  id="date"
                         type="date"
-                        defaultValue="2014-05-05"
+                        defaultValue="2014-5-5"
                         ref={input => _date = input}
                         required />
                         {/* storedDay above to be changd when date variable  */}
