@@ -128,7 +128,7 @@ export const AppRouter = (
                   <PrivateRoute 
                       authState={authState} 
                       path="/overview" exact 
-                      component={() => <SkiDayCount skiDayCount={skiDayCount}/>}
+                      component={() => <SkiDayCount skiDayCount={daylist}/>}
                       />
                       
                   <PreviewRoute                  
