@@ -16,12 +16,10 @@ const calcGoalProgress = (total, goal) => {
 export class SkiDayCount extends Component {
 
     render () {
+			
+		let { total, powder, backcountry } = this.props.skiDayCount
 
-		console.log(this);
-
-		let 
-		total=70, powder=20, 
-		backcountry=10, goal=100
+		let goal=100
         
         return (
 			<div className="ski-day-count">
