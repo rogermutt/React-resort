@@ -9,6 +9,7 @@ const percentToDecimal = (decimal) => {
 	return ((decimal * 100) + '%')
 }
 
+// The below to be recalculated so it's % of invoices submitted vs approved (which will be either powder or backcountry)
 const calcGoalProgress = (total, goal) => {
 	return percentToDecimal(total/goal)
 }
