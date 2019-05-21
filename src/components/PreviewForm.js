@@ -12,7 +12,7 @@ const RESORTS = [
 const stringDate = string => {
     let a = string.split('/')
     let day = a[0] > 9 ? a[0] : 0 + a[0]  
-    let month = a[1] > 9 ? a[1] : 0 + a[1]  
+    let month = a[1]
     return string.length === 0 ? "2014-05-05" : `${a[2]}-${month}-${day}`
 }
 
